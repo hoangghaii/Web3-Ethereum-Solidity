@@ -19,25 +19,4 @@ const input = {
 
 const output = JSON.parse(solc.compile(JSON.stringify(input))).contracts;
 
-function getCompiled(fileName) {
-  const inboxPath = path.resolve(__dirname, 'contracts', fileName);
-  const source = fs.readFileSync(inboxPath, 'utf8');
-
-  const input = {
-    language: 'Solidity',
-    sources: {
-      fileName: {
-        content: source,
-      },
-    },
-    settings: {
-      outputSelection: { '*': { '*': ['*'] } },
-    },
-  };
-
-  const output = JSON.parse(solc.compile(JSON.stringify(input))).contracts;
-
-  return output[fileName].Inbox;
-}
-
 module.exports = output['Inbox.sol'].Inbox;
