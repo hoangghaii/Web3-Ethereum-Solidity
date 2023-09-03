@@ -22,6 +22,8 @@ async function deplop() {
     .deploy({ data: evm.bytecode.object })
     .send({ from: mainAccount, gas: '1000000' });
 
+  console.log(abi);
+
   console.log('Contract deployed to', result.options.address);
 
   // Prevents a hanging deployment
