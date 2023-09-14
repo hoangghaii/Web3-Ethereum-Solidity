@@ -1,0 +1,7 @@
+.container {
+  @apply w-full;
+}
+
+.campaigns {
+  @apply w-auto;
+}

@@ -1,0 +1,7 @@
+.wrapper {
+  @apply w-full flex flex-col gap-10;
+}
+
+.form_container {
+  @apply flex flex-col gap-3 w-96 items-start;
+}

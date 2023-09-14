@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.section {
+  @apply px-20 py-10;
+}
+
+.wrapper {
+  @apply w-full py-10 flex items-start justify-center gap-10;
+}

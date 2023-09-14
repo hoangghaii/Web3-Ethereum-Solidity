@@ -1,0 +1,11 @@
+.wrapper {
+  @apply w-full flex flex-col gap-4;
+}
+
+.container {
+  @apply flex items-center justify-center gap-10;
+}
+
+.campaigns {
+  @apply w-full flex items-center justify-start flex-wrap gap-10;
+}
