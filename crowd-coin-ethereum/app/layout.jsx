@@ -2,6 +2,7 @@ import Header from '@/components/header';
 import ToastProvider from '@/providers/toast-provider';
 import './globals.css';
 import { Inter } from 'next/font/google';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -12,14 +13,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <section className="section">
-          <Header />
-          <div className="wrapper">{children}</div>
-        </section>
+        <ThemeProvider attribute="class" defaultTheme="light">
+          <section className="section">
+            <Header />
+            <div className="wrapper">{children}</div>
+          </section>
 
-        <ToastProvider />
+          <ToastProvider />
+        </ThemeProvider>
       </body>
     </html>
   );

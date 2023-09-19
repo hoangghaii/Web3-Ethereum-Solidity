@@ -18,11 +18,9 @@ async function deplop() {
 
   console.log('Attempting to deploy from account', mainAccount);
 
-  const result = await new web3.eth.Contract(
-    JSON.parse(compiledFactory.interface),
-  )
-    .deploy({ data: compiledFactory.bytecode })
-    .send({ from: mainAccount, gas: '1000000' });
+  const result = await new web3.eth.Contract(compiledFactory.abi)
+    .deploy({ data: compiledFactory.evm.bytecode.object })
+    .send({ from: mainAccount, gas: '1400000' });
 
   console.log('Contract deployed to', result.options.address);
 

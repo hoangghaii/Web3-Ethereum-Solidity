@@ -9,3 +9,7 @@
 .campaigns {
   @apply w-full flex items-center justify-start flex-wrap gap-10;
 }
+
+.link {
+  @apply flex items-center text-blue-500;
+}

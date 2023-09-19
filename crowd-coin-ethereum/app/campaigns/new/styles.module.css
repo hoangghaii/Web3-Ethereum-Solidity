@@ -5,3 +5,11 @@
 .form_container {
   @apply flex flex-col gap-3 w-96 items-start;
 }
+
+.input_success {
+  @apply border-green-500 focus:border-green-500 focus:ring-green-500;
+}
+
+.input_error {
+  @apply border-red-500 focus:border-red-500 focus:ring-red-500;
+}

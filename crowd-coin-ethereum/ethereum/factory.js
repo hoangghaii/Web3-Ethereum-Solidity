@@ -2,8 +2,8 @@ import web3 from '@/ethereum/web3';
 import compiledFactory from '@/ethereum/build/CampaignFactory.json';
 
 const instance = new web3.eth.Contract(
-  JSON.parse(compiledFactory.interface),
-  '0xEb5100743899EEcAC7Be098a99Ca3Bb11A180657',
+  compiledFactory.abi,
+  '0xe9b37DDC03b76d649E4c038756B436BD2057bE7e',
 );
 
 export default instance;
