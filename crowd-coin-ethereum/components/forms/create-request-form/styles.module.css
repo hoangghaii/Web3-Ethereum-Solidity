@@ -13,3 +13,7 @@
 .input_error {
   @apply border-red-500 focus:border-red-500 focus:ring-red-500;
 }
+
+.btn_group {
+  @apply flex items-center gap-4;
+}

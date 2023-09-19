@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Loader2 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,7 +30,7 @@ const schema = yup
   })
   .required();
 
-const CreateRequestForm = () => {
+const CreateRequestForm = ({ address }) => {
   const {
     register,
     handleSubmit,
@@ -48,7 +49,19 @@ const CreateRequestForm = () => {
     try {
       const accounts = await web3.eth.getAccounts();
 
+      await campaign(address)
+        .methods.createRequest(
+          description,
+          web3.utils.toWei(amount, 'ether'),
+          recipient,
+        )
+        .send({
+          from: accounts[0],
+        });
+
       toast.success('Campaign created successfully!');
+
+      router.push(`/campaigns/${address}/requests`);
     } catch (error) {
       console.log(error);
       toast.error('Something went wrong, please try later.');
@@ -96,10 +109,16 @@ const CreateRequestForm = () => {
         />
       </div>
 
-      <Button type="submit" variant="default" disabled={loading}>
-        Create!
-        {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
-      </Button>
+      <div className={styles.btn_group}>
+        <Button type="submit" variant="ghost">
+          <Link href={`/campaigns/${address}/requests`}>Back</Link>
+        </Button>
+
+        <Button type="submit" variant="default" disabled={loading}>
+          Create!
+          {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+        </Button>
+      </div>
     </form>
   );
 };

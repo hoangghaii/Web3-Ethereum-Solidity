@@ -9,3 +9,11 @@
 .btn {
   @apply w-fit ml-auto;
 }
+
+.btn_finalize {
+  @apply bg-blue-500 hover:bg-blue-600;
+}
+
+.btn_approve {
+  @apply bg-green-500 hover:bg-green-600;
+}
