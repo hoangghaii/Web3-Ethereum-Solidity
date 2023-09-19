@@ -63,8 +63,8 @@ contract Campaign {
     function createRequest(
         string memory description,
         uint value,
-        address payable recipient
-    ) public payable restricted {
+        address recipient
+    ) public restricted {
         Request storage newRequest = requests.push();
 
         newRequest.description = description;
@@ -94,7 +94,11 @@ contract Campaign {
         request.complete = true;
     }
 
-    function getSumary() public view returns (uint, uint, uint, uint, address) {
+    function getSummary()
+        public
+        view
+        returns (uint, uint, uint, uint, address)
+    {
         return (
             minimumContribution,
             address(this).balance,

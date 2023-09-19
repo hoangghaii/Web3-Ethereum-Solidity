@@ -3,7 +3,7 @@ import compiledFactory from '@/ethereum/build/CampaignFactory.json';
 
 const instance = new web3.eth.Contract(
   compiledFactory.abi,
-  '0xe9b37DDC03b76d649E4c038756B436BD2057bE7e',
+  '0x714d4399889f1d7985aA4DA1E08A53951731061D',
 );
 
 export default instance;

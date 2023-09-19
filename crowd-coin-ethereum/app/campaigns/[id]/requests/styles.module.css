@@ -1,0 +1,11 @@
+.wrapper {
+  @apply w-full flex flex-col gap-10;
+}
+
+.content {
+  @apply flex flex-col gap-6;
+}
+
+.btn {
+  @apply w-fit ml-auto;
+}

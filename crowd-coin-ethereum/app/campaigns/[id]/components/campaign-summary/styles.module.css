@@ -1,0 +1,11 @@
+.section {
+  @apply flex flex-col items-start gap-6 w-2/3;
+}
+
+.card_container {
+  @apply grid grid-cols-2 gap-4 w-full;
+}
+
+.card_content {
+  @apply text-sm;
+}

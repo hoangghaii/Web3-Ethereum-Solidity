@@ -3,21 +3,33 @@
 }
 
 .container {
-  @apply w-full flex gap-20;
+  @apply w-full flex gap-12;
 }
 
 .section {
-  @apply flex flex-col items-start gap-4 w-1/2;
+  @apply flex flex-col items-start gap-6;
+}
+
+.section_1 {
+  @apply w-2/3;
+}
+
+.section_2 {
+  @apply w-1/3;
 }
 
 .card_container {
-  @apply grid grid-cols-2 grid-rows-2 gap-4 w-full;
+  @apply grid grid-cols-2 gap-4 w-full;
 }
 
 .form_container {
-  @apply w-96 flex flex-col gap-4 items-start;
+  @apply w-full flex flex-col gap-4 items-start;
 }
 
 .input {
   @apply w-full;
+}
+
+.card_content {
+  @apply text-sm;
 }
