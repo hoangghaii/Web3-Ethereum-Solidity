@@ -68,11 +68,41 @@ const CampaignRequests = () => {
     }
   }
 
+  async function onApprove(index) {
+    try {
+      const campaignInstance = campaign(params.id);
+
+      const accounts = await web3.eth.getAccounts();
+
+      await campaignInstance.methods.approveRequest(index).send({
+        from: accounts[0],
+      });
+    } catch (error) {
+      console.log(error);
+
+      toast.error('Something went wrong, please try later.');
+    }
+  }
+
+  async function onFinalize(index) {
+    try {
+      const campaignInstance = campaign(params.id);
+
+      const accounts = await web3.eth.getAccounts();
+
+      await campaignInstance.methods.finalizeRequest(index).send({
+        from: accounts[0],
+      });
+    } catch (error) {
+      console.log(error);
+
+      toast.error('Something went wrong, please try later.');
+    }
+  }
+
   useEffect(() => {
     getCampaignRequestsCount();
   }, []);
-
-  console.log(approversCount);
 
   return (
     <div className={styles.wrapper}>
@@ -94,7 +124,7 @@ const CampaignRequests = () => {
 
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[100px]">ID</TableHead>
+                <TableHead className="w-[30px]">ID</TableHead>
 
                 <TableHead>Description</TableHead>
 
@@ -104,9 +134,11 @@ const CampaignRequests = () => {
 
                 <TableHead>Approval count</TableHead>
 
-                <TableHead className="text-center">
-                  {isManager ? 'Finalize' : 'Approvals'}
-                </TableHead>
+                <TableHead className="text-center">Approvals</TableHead>
+
+                {isManager && (
+                  <TableHead className="text-center">Finalize</TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -121,7 +153,7 @@ const CampaignRequests = () => {
                     convertBigInt(request.value)
                   }
                 >
-                  <TableCell className="font-medium">{index}</TableCell>
+                  <TableCell className="font-medium">{index + 1}</TableCell>
 
                   <TableCell className="capitalize">
                     {request.description}
@@ -141,13 +173,27 @@ const CampaignRequests = () => {
 
                   <TableCell className="text-center">
                     <Button
-                      className={cn(
-                        isManager ? styles.btn_approve : btn.btn_finalize,
-                      )}
+                      variant="outline"
+                      className={styles.btn_approve}
+                      onClick={() => onApprove(index)}
+                      disabled={request.complete}
                     >
-                      {isManager ? 'Finalize' : 'Approve'}
+                      Approve
                     </Button>
                   </TableCell>
+
+                  {isManager && (
+                    <TableCell className="text-center">
+                      <Button
+                        variant="outline"
+                        className={styles.btn_finalize}
+                        onClick={() => onFinalize(index)}
+                        disabled={request.complete}
+                      >
+                        Finalize
+                      </Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>

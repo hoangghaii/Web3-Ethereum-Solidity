@@ -2,10 +2,16 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 const { Web3 } = require('web3');
 const compiledFactory = require('./build/CampaignFactory.json');
 
-const provider = new HDWalletProvider(
-  'arrange index chase spin faculty meadow museum brief combine plunge match say',
-  'https://sepolia.infura.io/v3/fa79d1012d6c4976ac5db26737484320',
-);
+const mnemonicPhrase =
+  'arrange index chase spin faculty meadow museum brief combine plunge match say';
+
+const providerUrl =
+  'https://sepolia.infura.io/v3/fa79d1012d6c4976ac5db26737484320';
+
+const provider = new HDWalletProvider({
+  mnemonic: mnemonicPhrase,
+  providerOrUrl: providerUrl,
+});
 
 const web3 = new Web3(provider);
 

@@ -11,9 +11,9 @@
 }
 
 .btn_finalize {
-  @apply bg-blue-500 hover:bg-blue-600;
+  @apply border-blue-500 text-blue-500 hover:border-blue-600 hover:text-blue-500;
 }
 
 .btn_approve {
-  @apply bg-green-500 hover:bg-green-600;
+  @apply border-green-500 text-green-500 hover:border-green-600 hover:text-green-500;
 }

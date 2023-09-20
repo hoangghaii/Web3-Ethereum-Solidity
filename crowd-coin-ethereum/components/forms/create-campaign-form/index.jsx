@@ -17,6 +17,7 @@ import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
 import styles from './styles.module.css';
+import { convertBigInt } from '@/utils';
 
 const schema = yup
   .object({
@@ -44,16 +45,18 @@ const CreateCampaignForm = () => {
       const accounts = await web3.eth.getAccounts();
 
       const gasEstimate = await factory.methods
-        .createCampaign(minimum)
+        .createCampaign(minimumContribution)
         .estimateGas({ from: accounts[0] });
 
-      await factory.methods
-        .createCampaign(minimumContribution.toString())
+      const res = await factory.methods
+        .createCampaign(minimumContribution)
         .send({
           from: accounts[0],
-          gas: gasEstimate.toString(),
+          // gas: convertBigInt(gasEstimate),
           // gasLimit: '0x5028',
         });
+
+      console.log(res);
 
       toast.success('Campaign created successfully!');
 
