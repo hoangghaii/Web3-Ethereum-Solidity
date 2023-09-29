@@ -1,24 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.21;
-
-contract CampaignFactory {
-    address payable[] public deployedCampaigns;
-
-    function createCampaign(uint minimum) public {
-        address newCampaign = address(new Campaign(minimum, msg.sender));
-
-        deployedCampaigns.push(payable(newCampaign));
-    }
-
-    function getDeployedCampaigns()
-        public
-        view
-        returns (address payable[] memory)
-    {
-        return deployedCampaigns;
-    }
-}
+pragma solidity 0.8.21;
 
 contract Campaign {
     struct Request {
@@ -46,10 +28,10 @@ contract Campaign {
         _;
     }
 
-    constructor(uint minimum, address creator) {
-        manager = creator;
+    constructor(uint _minimum, address _creator) {
+        manager = _creator;
 
-        minimumContribution = minimum;
+        minimumContribution = _minimum;
     }
 
     function contribute() public payable {
@@ -61,21 +43,21 @@ contract Campaign {
     }
 
     function createRequest(
-        string memory description,
-        uint value,
-        address recipient
+        string memory _description,
+        uint _value,
+        address _recipient
     ) public restricted {
         Request storage newRequest = requests.push();
 
-        newRequest.description = description;
-        newRequest.value = value;
-        newRequest.recipient = recipient;
+        newRequest.description = _description;
+        newRequest.value = _value;
+        newRequest.recipient = _recipient;
         newRequest.complete = false;
         newRequest.approvalCount = 0;
     }
 
-    function approveRequest(uint index) public {
-        Request storage request = requests[index];
+    function approveRequest(uint _index) public {
+        Request storage request = requests[_index];
 
         require(approvers[msg.sender]);
         require(!request.approvals[msg.sender]);
@@ -84,8 +66,8 @@ contract Campaign {
         request.approvalCount++;
     }
 
-    function finalizeRequest(uint index) public restricted {
-        Request storage request = requests[index];
+    function finalizeRequest(uint _index) public restricted {
+        Request storage request = requests[_index];
 
         require(request.approvalCount > (approversCount / 2));
         require(!request.complete);

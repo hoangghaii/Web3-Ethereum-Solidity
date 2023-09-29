@@ -52,7 +52,7 @@ const CreateCampaignForm = () => {
         .createCampaign(minimumContribution)
         .send({
           from: accounts[0],
-          // gas: convertBigInt(gasEstimate),
+          gas: convertBigInt(gasEstimate),
           // gasLimit: '0x5028',
         });
 

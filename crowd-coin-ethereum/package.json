@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "solc-compile": "cd ethereum && truffle compile",
+    "solc-migrate-local": "cd ethereum && truffle migrate",
+    "solc_migrate": "cd ethereum && truffle migrate --network sepolia"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
@@ -16,6 +19,7 @@
     "autoprefixer": "10.4.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "dotenv": "^16.3.1",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
     "fs-extra": "^11.1.1",
