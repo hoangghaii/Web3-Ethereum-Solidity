@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.21;
 
@@ -22,20 +22,20 @@ contract Campaign {
 
     uint public approversCount;
 
+    constructor(address _creator, uint _minimum) {
+        manager = _creator;
+
+        minimumContribution = _minimum;
+    }
+
     modifier restricted() {
         require(msg.sender == manager);
 
         _;
     }
 
-    constructor(uint _minimum, address _creator) {
-        manager = _creator;
-
-        minimumContribution = _minimum;
-    }
-
     function contribute() public payable {
-        require(msg.value > minimumContribution);
+        require(msg.value >= minimumContribution);
 
         approvers[msg.sender] = true;
 

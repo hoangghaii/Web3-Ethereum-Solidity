@@ -1,43 +1,61 @@
-import React, { useReducer, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
 import Web3 from 'web3';
+import ItemManagerArtifact from '../../contracts/ItemManager.json';
 import EthContext from './EthContext';
-import { reducer, actions, initialState } from './state';
+import { actions, initialState, reducer } from './state';
 
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const init = useCallback(async (artifact) => {
-    if (artifact) {
-      const web3 = new Web3(Web3.givenProvider || 'ws://localhost:8545');
+  const init = useCallback(async () => {
+    try {
+      let web3;
 
-      const accounts = await web3.eth.requestAccounts();
+      if (
+        typeof window !== 'undefined' &&
+        typeof window.ethereum !== 'undefined'
+      ) {
+        // We are in the browser and metamask is running.
+        window.ethereum.request({ method: 'eth_requestAccounts' });
+
+        web3 = new Web3(window.ethereum);
+      } else {
+        // We are on the server *OR* the user is not running metamask
+        const provider = new Web3.providers.HttpProvider(
+          'https://sepolia.infura.io/v3/a4ef57360d90469db1d36450b4cf3589',
+        );
+        web3 = new Web3(provider);
+      }
+
+      const accounts = await web3.eth.getAccounts();
 
       const networkID = await web3.eth.net.getId();
 
-      const { abi } = artifact;
-
-      let address, contract;
-
-      try {
-        address = artifact.networks[networkID].address;
-        contract = new web3.eth.Contract(abi, address);
-      } catch (err) {
-        console.error(err);
-      }
+      const itemManagerContract = new web3.eth.Contract(
+        ItemManagerArtifact.abi,
+        ItemManagerArtifact.networks[networkID] &&
+          ItemManagerArtifact.networks[networkID].address,
+      );
 
       dispatch({
         type: actions.init,
-        data: { artifact, web3, accounts, networkID, contract },
+        data: {
+          web3,
+          accounts,
+          networkID,
+          itemManagerArtifact: ItemManagerArtifact,
+          itemManagerContract,
+        },
       });
+    } catch (error) {
+      console.error(error);
     }
   }, []);
 
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = require('../../contracts/SimpleStorage.json');
-
-        init(artifact);
+        init();
       } catch (err) {
         console.error(err);
       }
@@ -50,7 +68,9 @@ function EthProvider({ children }) {
     const events = ['chainChanged', 'accountsChanged'];
 
     const handleChange = () => {
-      init(state.artifact);
+      init();
+
+      window.location.reload();
     };
 
     events.forEach((e) => window.ethereum.on(e, handleChange));
@@ -58,7 +78,7 @@ function EthProvider({ children }) {
     return () => {
       events.forEach((e) => window.ethereum.removeListener(e, handleChange));
     };
-  }, [init, state.artifact]);
+  }, [init, state.itemManagerArtifact]);
 
   return (
     <EthContext.Provider

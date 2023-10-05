@@ -5,9 +5,10 @@ const actions = {
 const initialState = {
   web3: null,
   accounts: null,
-  networkID: null,
-  itemManagerArtifact: null,
-  itemManagerContract: null,
+  campaignFactoryAddress: null,
+  campaignFactoryContract: null,
+  simpleStorageAddress: null,
+  simpleStorageContract: null,
 };
 
 const reducer = (state, action) => {

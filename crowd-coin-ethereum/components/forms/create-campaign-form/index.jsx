@@ -3,9 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-import factory from '@/ethereum/factory';
-import web3 from '@/ethereum/web3';
+import { useEth } from '@/contexts/EthContext';
 import { cn } from '@/lib/utils';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,7 +15,6 @@ import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
 import styles from './styles.module.css';
-import { convertBigInt } from '@/utils';
 
 const schema = yup
   .object({
@@ -26,6 +23,10 @@ const schema = yup
   .required();
 
 const CreateCampaignForm = () => {
+  const {
+    state: { web3, accounts, campaignFactoryAddress, campaignFactoryContract },
+  } = useEth();
+
   const {
     register,
     handleSubmit,
@@ -39,24 +40,21 @@ const CreateCampaignForm = () => {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit({ minimumContribution }) {
+    if (!accounts || !campaignFactoryContract) return;
+
     setLoading(true);
 
     try {
-      const accounts = await web3.eth.getAccounts();
-
-      const gasEstimate = await factory.methods
+      const gas = await campaignFactoryContract.methods
         .createCampaign(minimumContribution)
-        .estimateGas({ from: accounts[0] });
+        .estimateGas();
 
-      const res = await factory.methods
+      const transaction = await campaignFactoryContract.methods
         .createCampaign(minimumContribution)
         .send({
           from: accounts[0],
-          gas: convertBigInt(gasEstimate),
-          // gasLimit: '0x5028',
+          gas,
         });
-
-      console.log(res);
 
       toast.success('Campaign created successfully!');
 

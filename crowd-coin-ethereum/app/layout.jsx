@@ -1,8 +1,9 @@
 import Header from '@/components/header';
-import ToastProvider from '@/providers/toast-provider';
-import './globals.css';
-import { Inter } from 'next/font/google';
+import { EthProvider } from '@/contexts/EthContext';
 import { ThemeProvider } from '@/providers/theme-provider';
+import ToastProvider from '@/providers/toast-provider';
+import { Inter } from 'next/font/google';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,12 +17,14 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light">
-          <section className="section">
-            <Header />
-            <div className="wrapper">{children}</div>
-          </section>
+          <EthProvider>
+            <section className="section">
+              <Header />
+              <div className="wrapper">{children}</div>
+            </section>
 
-          <ToastProvider />
+            <ToastProvider />
+          </EthProvider>
         </ThemeProvider>
       </body>
     </html>

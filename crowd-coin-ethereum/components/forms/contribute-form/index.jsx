@@ -17,9 +17,14 @@ import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
 import styles from './styles.module.css';
+import { useEth } from '@/contexts/EthContext';
 
 const ContributeForm = ({ address, minimumContribution }) => {
   const router = useRouter();
+
+  const {
+    state: { accounts },
+  } = useEth();
 
   const schema = yup
     .object({
@@ -47,18 +52,20 @@ const ContributeForm = ({ address, minimumContribution }) => {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit({ contribute }) {
+    if (!accounts) return;
+
     setLoading(true);
 
     try {
-      const campaignSolc = campaign(address);
+      const campaignContract = campaign(address);
 
-      const accounts = await web3.eth.getAccounts();
+      console.log(campaignContract.methods);
 
       const contributeValue = web3.utils.toWei(contribute, 'ether');
 
-      await campaignSolc.methods.contribute().send({
+      await campaignContract.methods.contribute().send({
         from: accounts[0],
-        value: contributeValue,
+        value: parseInt(contributeValue),
       });
 
       toast.success('Contribute campaign successfully!');

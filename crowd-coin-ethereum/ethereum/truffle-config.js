@@ -46,7 +46,7 @@
 
 const MNEMONIC =
   'arrange index chase spin faculty meadow museum brief combine plunge match say';
-const PROJECT_ID = 'wzWVUV3ldxhW4ESR_Htq-vWP6FUpXCnW';
+const PROJECT_ID = 'a4ef57360d90469db1d36450b4cf3589';
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
@@ -69,6 +69,12 @@ module.exports = {
     // You should run a client (like ganache, geth, or parity) in a separate terminal
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
+    //
+    ganache: {
+      host: '127.0.0.1', // Localhost (default: none)
+      port: 8545, // Standard Ethereum port (default: none)
+      network_id: '*', // Any network (default: none)
+    },
     //
     // development: {
     //  host: "127.0.0.1",     // Localhost (default: none)
@@ -100,9 +106,9 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           MNEMONIC,
-          `https://eth-sepolia.g.alchemy.com/v2/${PROJECT_ID}`,
+          `https://sepolia.infura.io/v3/${PROJECT_ID}`,
         ),
-      network_id: 11155111, // Goerli's id
+      network_id: 11155111, // Sepolia's id: https://docs.infura.io/infura-expansion-apis/nft-api/nft-sdk/supported-networks
       confirmations: 2, // # of confirmations to wait between deployments. (default: 0)
       timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )

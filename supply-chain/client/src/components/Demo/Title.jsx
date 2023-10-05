@@ -1,5 +1,10 @@
 function Title() {
-  return <h2>See it in action</h2>;
+  return (
+    <div className="title-container">
+      <h1>Event Trigger / Supply Chain Example</h1>
+      <h2>Items</h2>
+    </div>
+  );
 }
 
 export default Title;
