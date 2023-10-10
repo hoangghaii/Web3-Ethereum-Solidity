@@ -1,0 +1,7 @@
+.container {
+  @apply p-7;
+}
+
+.input {
+  @apply w-[350px];
+}

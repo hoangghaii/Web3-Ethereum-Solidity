@@ -1,0 +1,53 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+
+# Testing
+coverage
+
+# Next.js
+.next/
+out/
+
+# Production
+build
+client/contracts
+client/*/contracts
+
+
+# Env
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Web3 provider secrets
+.secret
+.infura
+.etherscan
+
+
+# Editor
+.vscode
+
+# Misc.
+.DS_Store
+*.pem
+
+# Debug
+npmdebug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env*.local
+
+# Typescript
+*.tsbuildinfo
+next-env.d.ts
