@@ -1,0 +1,14 @@
+.main {
+  @apply min-h-screen bg-white;
+
+  font-family: lft-etica-mono, ui-monospace, SFMono-Regular, 'SF Mono', Menlo,
+    Consolas, 'Liberation Mono', monospace;
+
+  background: rgb(238, 174, 202);
+
+  background: radial-gradient(
+    circle,
+    rgba(238, 174, 202, 1) 0%,
+    rgba(72, 160, 248, 1) 100%
+  );
+}

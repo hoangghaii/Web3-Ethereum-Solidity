@@ -1,0 +1,25 @@
+.header {
+  @apply flex justify-between items-center w-full bg-[linear-gradient(_to_right,rgba(255,0,0,0),rgb(255,255,255)_)] text-[rgb(17,42,87)] px-6 py-4;
+}
+
+.header_logo_section {
+  @apply flex items-center;
+}
+
+.title {
+  @apply text-[1.3rem] font-medium ml-2;
+}
+
+.beans {
+  @apply ml-2;
+}
+
+.header_btn {
+  @apply flex items-center gap-1;
+}
+
+.connect_btn {
+  @apply px-2 py-3 w-fit bg-[#48a0f8] cursor-pointer rounded-[0.3rem] border-[none];
+
+  outline: none;
+}
