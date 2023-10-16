@@ -1,0 +1,31 @@
+/* ------------ CONTAINER WRAPPER ------------ */
+.container_wrapper {
+  @apply p-4;
+}
+
+/* ---------------- CONTAINER ---------------- */
+.container {
+  @apply flex items-center justify-between;
+}
+
+.connect_btn {
+  @apply cursor-pointer;
+}
+
+/* ----------------- LOADING ----------------- */
+
+.loading_container {
+  @apply w-full h-screen;
+
+  @apply flex items-center justify-center;
+}
+
+.loading_icon_container {
+  @apply w-20 h-20;
+}
+
+.loading_icon {
+  @apply w-full h-full text-gray-500;
+
+  @apply animate-bounce;
+}

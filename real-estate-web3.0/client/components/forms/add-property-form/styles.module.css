@@ -1,0 +1,15 @@
+.card {
+  @apply p-2  w-96;
+}
+
+.form_image_input {
+  @apply h-full;
+}
+
+.title {
+  @apply mb-6;
+}
+
+.btn {
+  @apply mt-6;
+}
