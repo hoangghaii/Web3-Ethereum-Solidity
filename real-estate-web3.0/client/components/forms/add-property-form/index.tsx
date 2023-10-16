@@ -69,7 +69,6 @@ const AddPropertyForm: FC = () => {
         'https://api.pinata.cloud/pinning/pinFileToIPFS',
         formData,
         {
-          // maxBodyLength: 'Infinity',
           headers: {
             'Content-Type': `multipart/form-data; boundary=${
               (formData as any)._boundary
@@ -79,7 +78,7 @@ const AddPropertyForm: FC = () => {
         }
       );
 
-      const _images = `ipfs://${pinataRes.data.IpfsHash}`;
+      const _images = `https://ipfs.io/ipfs/${pinataRes.data.IpfsHash}`;
 
       const _price = ethers.utils.parseUnits(data.price.toString(), 18);
 

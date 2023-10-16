@@ -11,21 +11,3 @@ export function calculateBarPercentage(goal: number, raisedAmount: number) {
 
   return percentage;
 }
-
-export function checkIfImage(url: string, callback: (arg0: boolean) => void) {
-  const img = new Image();
-
-  img.src = url;
-
-  if (img.complete) {
-    callback(true);
-  }
-
-  img.onload = function () {
-    callback(true);
-  };
-
-  img.onerror = function () {
-    callback(false);
-  };
-}
