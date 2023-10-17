@@ -1,0 +1,19 @@
+.dialog {
+  @apply w-full;
+}
+
+.image {
+  @apply block h-full w-full rounded-md object-cover;
+}
+
+.title {
+  @apply mt-6;
+}
+
+.desc {
+  @apply mb-2;
+}
+
+.btn {
+  @apply mx-auto w-1/2;
+}

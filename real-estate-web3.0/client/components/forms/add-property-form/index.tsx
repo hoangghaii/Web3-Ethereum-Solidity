@@ -1,7 +1,6 @@
 'use client';
 
-import Button from '@/components/common/button';
-import { AppContext } from '@/providers/app-provider';
+import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Card, Flex, Heading, Text, TextField } from '@radix-ui/themes';
 import { useContractWrite } from '@thirdweb-dev/react';
@@ -10,12 +9,15 @@ import { ethers } from 'ethers';
 import { FC, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import * as yup from 'yup';
+
+import Button from '@/components/common/button';
+import { AppContext } from '@/providers/app-provider';
+
 import styles from './styles.module.css';
 
 const schema = yup
   .object({
-    price: yup.number().positive().integer().required(),
+    price: yup.number().positive().required(),
     propertyTitle: yup.string().required(),
     category: yup.string().required(),
     images: yup.mixed().required(),
@@ -29,11 +31,7 @@ const AddPropertyForm: FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
 
   const { mutateAsync: addProperty } = useContractWrite(
     contract,
@@ -80,7 +78,7 @@ const AddPropertyForm: FC = () => {
 
       const _images = `https://ipfs.io/ipfs/${pinataRes.data.IpfsHash}`;
 
-      const _price = ethers.utils.parseUnits(data.price.toString(), 18);
+      const _price = ethers.utils.parseEther(data.price.toString());
 
       const _owner = address;
 

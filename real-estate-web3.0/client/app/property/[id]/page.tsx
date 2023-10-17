@@ -3,12 +3,11 @@
 import { useContext } from 'react';
 
 import Loading from '@/app/loading';
-import AllProperties from '@/components/all-properties';
 import Header from '@/components/common/header';
-import AddPropertyForm from '@/components/forms/add-property-form';
+import PropertyDetail from '@/components/property-detail';
 import { AppContext } from '@/providers/app-provider';
 
-export default function Home() {
+export default function PropertyDetailPage() {
   const { isContractLoading } = useContext(AppContext);
 
   if (isContractLoading) {
@@ -20,9 +19,7 @@ export default function Home() {
       <Header />
 
       <main>
-        <AddPropertyForm />
-
-        <AllProperties />
+        <PropertyDetail />
       </main>
     </>
   );

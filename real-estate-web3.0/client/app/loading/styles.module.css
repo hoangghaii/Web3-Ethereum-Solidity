@@ -1,0 +1,15 @@
+.loading_container {
+  @apply h-screen w-full;
+
+  @apply flex items-center justify-center;
+}
+
+.loading_icon_container {
+  @apply h-20 w-20;
+}
+
+.loading_icon {
+  @apply h-full w-full text-gray-500;
+
+  @apply animate-bounce;
+}

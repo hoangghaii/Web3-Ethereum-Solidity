@@ -5,9 +5,9 @@ import { Button as RadixButton } from '@radix-ui/themes';
 import { FC } from 'react';
 
 type Props = {
-  children: React.ReactNode;
-  className: string;
-  type: 'button' | 'reset' | 'submit' | undefined;
+  children: React.ReactNode | string;
+  className?: string;
+  type?: 'button' | 'reset' | 'submit' | undefined;
   isLoading?: boolean;
   onClick?: () => void;
 };

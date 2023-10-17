@@ -1,0 +1,23 @@
+.card {
+  @apply relative w-[330px];
+}
+
+.property_image {
+  @apply block h-full w-full rounded-xl bg-gray-50 object-cover;
+}
+
+.btn {
+  @apply mt-2;
+}
+
+.property_detail {
+  @apply p-2;
+}
+
+.property_price {
+  @apply absolute left-6 top-[26px] z-[1] rounded-xl;
+}
+
+.property_location {
+  @apply absolute right-6 top-[26px] z-[1] rounded-xl;
+}

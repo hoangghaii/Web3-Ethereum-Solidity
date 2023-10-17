@@ -1,0 +1,11 @@
+.input_field {
+  @apply w-1/2;
+}
+
+.input {
+  @apply w-full;
+}
+
+.btn {
+  @apply w-fit px-10;
+}

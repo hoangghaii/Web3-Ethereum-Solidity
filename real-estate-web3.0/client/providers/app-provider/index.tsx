@@ -34,15 +34,13 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   useEffect(() => {
     if (!isLoading) {
-      setState((prev) => ({ ...prev, address }));
-    }
-  }, [address]);
-
-  useEffect(() => {
-    if (!isLoading) {
       setState((prev) => ({ ...prev, contract, isContractLoading: false }));
     }
-  }, [contract, isLoading]);
+
+    if (address) {
+      setState((prev) => ({ ...prev, address }));
+    }
+  }, [address, contract, isLoading]);
 
   return (
     <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>

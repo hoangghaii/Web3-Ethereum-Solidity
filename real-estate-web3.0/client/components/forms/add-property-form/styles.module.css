@@ -1,5 +1,5 @@
 .card {
-  @apply p-2  w-96;
+  @apply w-96 p-2;
 }
 
 .form_image_input {

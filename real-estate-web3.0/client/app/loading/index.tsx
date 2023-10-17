@@ -1,5 +1,6 @@
 import { GlobeAsiaAustraliaIcon } from '@heroicons/react/24/outline';
 import { FC } from 'react';
+
 import styles from './styles.module.css';
 
 const Loading: FC = () => {
