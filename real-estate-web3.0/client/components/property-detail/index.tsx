@@ -1,34 +1,36 @@
 'use client';
 
+import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import {
-  CurrencyDollarIcon,
-  HomeModernIcon,
-  IdentificationIcon,
-  MapIcon,
-} from '@heroicons/react/24/outline';
-import { AspectRatio, Card, Flex, Heading, Text } from '@radix-ui/themes';
-import { useContractRead, useContractWrite } from '@thirdweb-dev/react';
-import { ethers } from 'ethers';
+  AspectRatio,
+  Avatar,
+  Badge,
+  Box,
+  Card,
+  Flex,
+  Heading,
+  IconButton,
+  Tabs,
+  Text,
+} from '@radix-ui/themes';
+import { useContractRead } from '@thirdweb-dev/react';
 import { useParams } from 'next/navigation';
 import { FC, useContext } from 'react';
-import { toast } from 'react-hot-toast';
 
-import Button from '@/components/common/button';
-import AddReviewForm from '@/components/forms/add-review-form';
 import { AppContext } from '@/providers/app-provider';
 import { ProperySolType } from '@/types';
 
+import DetailsTab from './components/details-tab';
+import ReviewsTab from './components/reviews-tab';
+import UsersInterestTab from './components/users-interest-tab';
 import styles from './styles.module.css';
 
 const PropertyDetail: FC = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { address, contract } = useContext(AppContext);
+  const { contract } = useContext(AppContext);
 
   const { data, isLoading } = useContractRead(contract, 'getProperty', [id]);
-
-  const { mutateAsync: buyProperty, isLoading: isLoadingBuyProperty } =
-    useContractWrite(contract, 'buyProperty');
 
   if (isLoading) {
     return;
@@ -36,114 +38,137 @@ const PropertyDetail: FC = () => {
 
   const property: ProperySolType = data;
 
-  async function handleBuyProperty() {
-    try {
-      const txResult = await buyProperty({
-        args: [id, address],
-        overrides: {
-          value: property.price,
-        },
-      });
-
-      console.info('contract call successs', txResult);
-
-      toast.success('Create property successfully!');
-    } catch (error) {
-      console.error('contract call failure', error);
-
-      toast.error('Something went wrong, please try later.');
-    }
-  }
-
-  const image = property.image.startsWith('ipfs')
-    ? `https://ipfs.io/ipfs/${property.image.split(':')[1].replaceAll('/', '')}`
-    : property.image;
-
   return (
-    <Card className={styles.dialog} variant="ghost">
-      <AspectRatio ratio={16 / 9}>
-        <img src={image} alt="Property image" className={styles.image} />
-      </AspectRatio>
+    <Flex className={styles.dialog} gap="5">
+      <Flex direction="column" gap="4" className={styles.section_1}>
+        <Card>
+          <AspectRatio ratio={16 / 16}>
+            <img
+              src={property.images}
+              alt="Property image"
+              className={styles.image}
+            />
+          </AspectRatio>
+        </Card>
 
-      <Flex direction="column" gap="5">
-        <Heading as="h4" className={styles.title}>
-          {property.propertyTitle}
-        </Heading>
+        <Flex gap="5" className={styles.image_preview_list}>
+          <Card className={styles.image_preview_box}>
+            <AspectRatio ratio={16 / 16}>
+              <img
+                src={property.images}
+                alt="Property image"
+                className={styles.image_preview}
+              />
+            </AspectRatio>
+          </Card>
 
-        <Text as="div" size="3" className={styles.desc}>
-          {property.description}
+          <Card className={styles.image_preview_box}>
+            <AspectRatio ratio={16 / 16}>
+              <img
+                src={property.images}
+                alt="Property image"
+                className={styles.image_preview}
+              />
+            </AspectRatio>
+          </Card>
+
+          <Card className={styles.image_preview_box}>
+            <AspectRatio ratio={16 / 16}>
+              <img
+                src={property.images}
+                alt="Property image"
+                className={styles.image_preview}
+              />
+            </AspectRatio>
+          </Card>
+        </Flex>
+      </Flex>
+
+      <Flex direction="column" gap="1" className={styles.section_2}>
+        <Flex justify="between">
+          <Heading as="h4" className={styles.title}>
+            {property.propertyTitle}
+          </Heading>
+
+          <Flex gap="4">
+            <Badge variant="soft" size="2" color="teal">
+              5
+            </Badge>
+
+            <IconButton className={styles.icon_btn}>
+              <EllipsisHorizontalIcon width="28" height="28" />
+            </IconButton>
+          </Flex>
+        </Flex>
+
+        <Text as="p" size="3" className={styles.desc} weight="bold">
+          #{id} Portal, Info bellow
         </Text>
 
-        <Flex gap="3" align="center">
-          <Text as="div" size="2" weight="medium">
-            Price:
-          </Text>
-
-          <Flex align="center" gap="2">
-            <CurrencyDollarIcon height="16" width="16" color="teal" />
-
-            <Text as="div" size="2">
-              {Number(
-                ethers.utils.formatEther(property.price)
-              ).toLocaleString()}{' '}
-              ETH
+        <Flex align="center" gap="8" my="5">
+          <Flex direction="column" gap="1">
+            <Text size="3" weight="medium" className={styles.category}>
+              Category{' '}
+              <Text size="2" weight="medium" className={styles.category_sub}>
+                10% royalties
+              </Text>
             </Text>
+
+            <Flex align="center" gap="3">
+              <Avatar
+                radius="full"
+                fallback="A"
+                src="https://images.unsplash.com/photo-1545996124-0501ebae84d0?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1964"
+              />
+
+              <Text size="2" weight="medium">
+                Only 10% Own
+              </Text>
+            </Flex>
+          </Flex>
+
+          <Flex direction="column" gap="1">
+            <Text size="2" weight="medium" className={styles.category_sub}>
+              Collection
+            </Text>
+
+            <Flex align="center" gap="3">
+              <Avatar
+                radius="full"
+                fallback="A"
+                src="https://images.unsplash.com/photo-1616766098956-c81f12114571?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1887"
+              />
+
+              <Text size="2" weight="medium">
+                {property.category}
+              </Text>
+            </Flex>
           </Flex>
         </Flex>
 
-        <Flex gap="3" align="center">
-          <Text as="span" size="2" weight="medium">
-            Location:
-          </Text>
+        <Tabs.Root defaultValue="details">
+          <Tabs.List>
+            <Tabs.Trigger value="details">Details</Tabs.Trigger>
+            <Tabs.Trigger value="reviews">Reviews</Tabs.Trigger>
+            <Tabs.Trigger value="users-interest">Users interest</Tabs.Trigger>
+          </Tabs.List>
 
-          <Flex align="center" gap="2">
-            <MapIcon height="16" width="16" color="teal" />
+          <Box pt="3" pb="2">
+            <Tabs.Content value="details">
+              <DetailsTab id={id} property={property} />
+            </Tabs.Content>
 
-            <Text as="span" size="2">
-              {property.propertyAddress}
-            </Text>
-          </Flex>
-        </Flex>
+            <Tabs.Content value="reviews">
+              <ReviewsTab />
+            </Tabs.Content>
 
-        <Flex gap="3" align="center">
-          <Text as="span" size="2" weight="medium">
-            Owner:
-          </Text>
-
-          <Flex align="center" gap="2">
-            <IdentificationIcon height="16" width="16" color="teal" />
-
-            <Text as="span" size="2">
-              {property.owner}
-            </Text>
-          </Flex>
-        </Flex>
-
-        <Flex gap="3" align="center">
-          <Text as="span" size="2" weight="medium">
-            Reviews:
-          </Text>
-
-          <Text as="span" size="2">
-            {property.reviews.map((review, index) => (
-              <p key={index}>{review}</p>
-            ))}
-          </Text>
-        </Flex>
-
-        <Button
-          type="submit"
-          className={styles.btn}
-          isLoading={isLoadingBuyProperty}
-          onClick={handleBuyProperty}
-        >
-          <Text>Buy property</Text>
-          <HomeModernIcon height="20" width="20" />
-        </Button>
-
-        <AddReviewForm productId={id} />
+            <Tabs.Content value="users-interest">
+              <UsersInterestTab />
+            </Tabs.Content>
+          </Box>
+        </Tabs.Root>
       </Flex>
-    </Card>
+    </Flex>
   );
 };
 

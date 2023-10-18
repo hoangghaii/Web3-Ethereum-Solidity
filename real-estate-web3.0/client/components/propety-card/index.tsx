@@ -6,7 +6,6 @@ import {
   Badge,
   Button,
   Card,
-  Dialog,
   Flex,
   Heading,
   Text,
@@ -50,7 +49,7 @@ const PropertyCard: FC<Props> = ({ property, handleViewDetail }: Props) => {
 
       <AspectRatio ratio={16 / 16}>
         <img
-          src={property.image}
+          src={property.images}
           alt="Property image"
           className={styles.property_image}
         />
@@ -65,16 +64,14 @@ const PropertyCard: FC<Props> = ({ property, handleViewDetail }: Props) => {
           {property.description}
         </Text>
 
-        <Dialog.Trigger>
-          <Button
-            onClick={() => {
-              handleViewDetail(property.productId);
-            }}
-            className={styles.btn}
-          >
-            View detail
-          </Button>
-        </Dialog.Trigger>
+        <Button
+          onClick={() => {
+            handleViewDetail(property.productId);
+          }}
+          className={styles.btn}
+        >
+          View detail
+        </Button>
       </Flex>
     </Card>
   );

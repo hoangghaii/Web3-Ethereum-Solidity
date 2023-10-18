@@ -1,0 +1,15 @@
+.btn {
+  @apply mx-auto w-1/2;
+}
+
+.title {
+  @apply text-[#646464];
+}
+
+.category {
+  @apply capitalize;
+}
+
+.ellipsis {
+  @apply w-[220px] truncate;
+}

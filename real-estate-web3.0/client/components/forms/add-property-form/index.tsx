@@ -17,7 +17,7 @@ import styles from './styles.module.css';
 
 const schema = yup
   .object({
-    price: yup.number().positive().required(),
+    price: yup.number().required(),
     propertyTitle: yup.string().required(),
     category: yup.string().required(),
     images: yup.mixed().required(),
@@ -158,7 +158,7 @@ const AddPropertyForm: FC = () => {
 
               <TextField.Input
                 id="_price"
-                type="number"
+                type="string"
                 placeholder="Enter property price"
                 {...register('price')}
               />

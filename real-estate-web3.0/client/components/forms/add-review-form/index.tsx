@@ -1,14 +1,16 @@
 'use client';
 
 import * as yup from 'yup';
-import {
-  ArrowPathIcon,
-  ChatBubbleLeftEllipsisIcon,
-  InformationCircleIcon,
-  PaperAirplaneIcon,
-} from '@heroicons/react/24/outline';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Callout, Flex, Text, TextField } from '@radix-ui/themes';
+import {
+  Callout,
+  Dialog,
+  Flex,
+  Button as RadixButton,
+  Text,
+  TextArea,
+} from '@radix-ui/themes';
 import { Rating } from '@smastrom/react-rating';
 import { useContractWrite } from '@thirdweb-dev/react';
 import { FC, useContext, useState } from 'react';
@@ -21,7 +23,10 @@ import { AppContext } from '@/providers/app-provider';
 import styles from './styles.module.css';
 
 const schema = yup
-  .object({ rating: yup.number().required(), review: yup.string().required() })
+  .object({
+    rating: yup.number(),
+    review: yup.string().required(),
+  })
   .required();
 
 type Props = {
@@ -33,8 +38,12 @@ const AddReviewForm: FC<Props> = ({ productId }: Props) => {
 
   const [rating, setRating] = useState(0);
 
-  const { register, setValue, handleSubmit } = useForm({
+  const { register, setValue, handleSubmit, reset } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      rating: 0,
+      review: '',
+    },
   });
 
   const { mutateAsync: addReview, isLoading } = useContractWrite(
@@ -57,7 +66,7 @@ const AddReviewForm: FC<Props> = ({ productId }: Props) => {
 
       console.info('contract call successs', txResult);
 
-      toast.success('Create property successfully!');
+      toast.success('Add review successfully!');
     } catch (err) {
       console.error('contract call failure', err);
 
@@ -66,64 +75,69 @@ const AddReviewForm: FC<Props> = ({ productId }: Props) => {
   });
 
   return (
-    <Flex asChild direction="column" gap="4" mt="8">
-      <form onSubmit={onSubmit}>
-        <Callout.Root>
-          <Callout.Icon>
-            <InformationCircleIcon width={16} height={16} color="teal" />
-          </Callout.Icon>
-          <Callout.Text>You will need login to rating and review.</Callout.Text>
-        </Callout.Root>
+    <Dialog.Content>
+      <Dialog.Title>Give Review</Dialog.Title>
 
-        <Flex asChild align="center" gap="2">
-          <label htmlFor="">
-            <Text as="span" size="2" weight="medium">
-              Your rating:
-            </Text>
+      <Dialog.Description size="3" mb="4">
+        Kindly provide your review for better user experience.
+      </Dialog.Description>
 
-            <Rating
-              style={{ maxWidth: 140 }}
-              value={rating}
-              onChange={onChangeRating}
-            />
-          </label>
-        </Flex>
+      <Flex asChild direction="column" gap="4">
+        <form onSubmit={onSubmit}>
+          <Callout.Root>
+            <Callout.Icon>
+              <InformationCircleIcon width={16} height={16} color="teal" />
+            </Callout.Icon>
+            <Callout.Text>
+              You will need login to add rating and review.
+            </Callout.Text>
+          </Callout.Root>
 
-        <Flex asChild align="center" gap="2">
-          <label htmlFor="">
-            <Text as="span" size="2" weight="medium">
-              Your review:
-            </Text>
+          <Flex asChild direction="column" align="start" gap="2">
+            <label htmlFor="">
+              <Text as="span" size="3" weight="medium">
+                Your review:
+              </Text>
 
-            <Flex gap="4" align="center" className={styles.input_field}>
-              <TextField.Root className={styles.input}>
-                <TextField.Input
-                  placeholder="Enter your review…"
-                  {...register('review')}
-                />
+              <TextArea
+                size="3"
+                placeholder="Your review…"
+                className={styles.textarea}
+                {...register('review')}
+              />
+            </label>
+          </Flex>
 
-                <TextField.Slot>
-                  {isLoading ? (
-                    <ArrowPathIcon
-                      width="16"
-                      height="16"
-                      className="animate-spin"
-                    />
-                  ) : (
-                    <ChatBubbleLeftEllipsisIcon height="16" width="16" />
-                  )}
-                </TextField.Slot>
-              </TextField.Root>
-            </Flex>
-          </label>
-        </Flex>
+          <Flex asChild direction="column" align="start" gap="2">
+            <label htmlFor="">
+              <Text as="span" size="3" weight="medium">
+                Your rating:
+              </Text>
 
-        <Button type="submit" className={styles.btn} isLoading={isLoading}>
-          <Text>Send</Text>
-          <PaperAirplaneIcon height="20" width="20" />
-        </Button>
-      </form>
-    </Flex>
+              <Rating
+                style={{ maxWidth: 140 }}
+                value={rating}
+                onChange={onChangeRating}
+              />
+            </label>
+          </Flex>
+
+          <Flex gap="3" justify="end">
+            <Dialog.Close>
+              <RadixButton variant="soft" color="gray" onClick={() => reset()}>
+                Cancel
+              </RadixButton>
+            </Dialog.Close>
+
+            {/* <Dialog.Close> */}
+            <Button type="submit" className={styles.btn} isLoading={isLoading}>
+              Add review
+            </Button>
+            {/* </Dialog.Close> */}
+          </Flex>
+        </form>
+      </Flex>
+    </Dialog.Content>
   );
 };
 

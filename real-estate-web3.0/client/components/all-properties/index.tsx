@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Dialog, Flex } from '@radix-ui/themes';
+import { Flex } from '@radix-ui/themes';
 import { useContractRead } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/navigation';
@@ -9,6 +9,8 @@ import { FC, useContext, useEffect, useState } from 'react';
 import PropertyCard from '@/components/propety-card';
 import { AppContext } from '@/providers/app-provider';
 import { ProperySolType, ProperyType } from '@/types';
+
+import styles from './styles.module.css';
 
 const AllProperties: FC = () => {
   const router = useRouter();
@@ -31,7 +33,7 @@ const AllProperties: FC = () => {
         price: ethers.utils.formatEther(element.price),
         propertyTitle: element.propertyTitle,
         category: element.category,
-        image: element.image,
+        images: element.images,
         propertyAddress: element.propertyAddress,
         description: element.description,
         productId: element.productId.toString(),
@@ -60,28 +62,17 @@ const AllProperties: FC = () => {
   }
 
   return (
-    <>
-      <Flex gap="3" asChild>
-        <Card>
-          {properties.map((property) => {
-            const image = property.image.startsWith('ipfs')
-              ? `https://ipfs.io/ipfs/${property.image
-                  .split(':')[1]
-                  .replaceAll('/', '')}`
-              : property.image;
-
-            return (
-              <Dialog.Root key={property.productId}>
-                <PropertyCard
-                  property={{ ...property, image }}
-                  handleViewDetail={() => handleViewDetail(property.productId)}
-                />
-              </Dialog.Root>
-            );
-          })}
-        </Card>
-      </Flex>
-    </>
+    <Flex gap="5" className={styles.container}>
+      {properties.map((property) => {
+        return (
+          <PropertyCard
+            key={property.productId}
+            property={property}
+            handleViewDetail={() => handleViewDetail(property.productId)}
+          />
+        );
+      })}
+    </Flex>
   );
 };
 

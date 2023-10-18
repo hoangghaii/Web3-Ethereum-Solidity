@@ -1,4 +1,4 @@
-import { BigNumberish } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 
 export type ProperySolType = {
   productId: BigNumberish;
@@ -6,7 +6,7 @@ export type ProperySolType = {
   price: BigNumberish;
   propertyTitle: string;
   category: string;
-  image: string;
+  images: string;
   propertyAddress: string;
   description: string;
   reviewers: any[];
@@ -19,9 +19,17 @@ export type ProperyType = {
   price: string;
   propertyTitle: string;
   category: string;
-  image: string;
+  images: string;
   propertyAddress: string;
   description: string;
   reviewers: any[];
   reviews: any[];
+};
+
+export type ReviewSolType = {
+  reviewer: string;
+  productId: BigNumber;
+  rating: BigNumber;
+  comment: string;
+  likes: BigNumber;
 };

@@ -4,6 +4,8 @@
 
 .container_wrapper {
   @apply p-4;
+
+  @apply flex flex-col gap-3;
 }
 
 * {

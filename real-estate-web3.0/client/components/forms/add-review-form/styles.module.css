@@ -2,10 +2,6 @@
   @apply w-1/2;
 }
 
-.input {
+.textarea {
   @apply w-full;
-}
-
-.btn {
-  @apply w-fit px-10;
 }

@@ -1,7 +1,12 @@
 'use client';
 
 import { Button, Heading, Text } from '@radix-ui/themes';
-import { metamaskWallet, useConnect } from '@thirdweb-dev/react';
+import {
+  metamaskWallet,
+  useConnect,
+  useDisconnect,
+  useSigner,
+} from '@thirdweb-dev/react';
 import { useRouter } from 'next/navigation';
 import { FC, useContext } from 'react';
 
@@ -17,6 +22,10 @@ const Header: FC = () => {
   const { address } = useContext(AppContext);
 
   const connect = useConnect();
+
+  const disconect = useDisconnect();
+
+  const signer = useSigner();
 
   async function handleConnect() {
     try {

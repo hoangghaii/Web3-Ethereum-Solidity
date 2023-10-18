@@ -12,12 +12,16 @@ contract RealEstate {
         uint256 price;
         string propertyTitle;
         string category;
-        string image;
+        string images;
         string propertyAddress;
         string description;
         address[] reviewers;
         string[] reviews;
     }
+
+    address payable public contractOwner;
+
+    uint256 public listingPrice = 0.025 ether;
 
     mapping(uint256 => Property) private properties; // productId => Property
 
@@ -51,6 +55,7 @@ contract RealEstate {
         uint256 rating;
         string comment;
         uint256 likes;
+        uint256 reviewIndex;
     }
 
     struct Product {
@@ -81,6 +86,21 @@ contract RealEstate {
         uint256 likes
     );
 
+    /** -------------------- CONSTRUCTER -------------------- */
+    constructor() {
+        contractOwner = payable(msg.sender);
+    }
+
+    /** -------------------- MODIFIERS -------------------- */
+    modifier onlyContractOwner() {
+        require(
+            msg.sender == contractOwner,
+            "Only owner of the contract can change this property"
+        );
+
+        _;
+    }
+
     /** -------------------- FUNCTIONS -------------------- */
 
     // Property functions
@@ -93,8 +113,11 @@ contract RealEstate {
         string memory _images,
         string memory _propertyAddress,
         string memory _description
-    ) external returns (uint256) {
-        require(_price > 0, "Price must be greater than 0");
+    ) external {
+        require(
+            _price >= listingPrice,
+            "Price must be greater than listing price"
+        );
 
         uint256 productId = propertyIndex;
 
@@ -110,7 +133,7 @@ contract RealEstate {
 
         property.category = _category;
 
-        property.image = _images;
+        property.images = _images;
 
         property.propertyAddress = _propertyAddress;
 
@@ -119,23 +142,20 @@ contract RealEstate {
         emit PropertyListed(productId, _owner, _price);
 
         propertyIndex++;
-
-        return productId;
     }
 
     function updateProperty(
-        address _owner,
         uint256 _productId,
         string memory _propertyTitle,
         string memory _category,
         string memory _images,
         string memory _propertyAddress,
         string memory _description
-    ) external returns (uint256) {
+    ) external {
         Property storage property = properties[_productId];
 
         require(
-            property.owner == _owner,
+            property.owner == msg.sender,
             "Your are not the owner of this property"
         );
 
@@ -143,32 +163,27 @@ contract RealEstate {
 
         property.category = _category;
 
-        property.image = _images;
+        property.images = _images;
 
         property.propertyAddress = _propertyAddress;
 
         property.description = _description;
-
-        return _productId;
     }
 
-    function updatePrice(
-        address _owner,
-        uint256 _productId,
-        uint256 _price
-    ) external returns (string memory) {
+    function updatePrice(uint256 _productId, uint256 _price) external {
         Property storage property = properties[_productId];
 
         require(
-            property.owner == _owner,
+            property.owner == msg.sender,
             "Your are not the owner of this property"
         );
 
-        require(_price > 0, "Price must be greater than 0");
+        require(
+            _price >= listingPrice,
+            "Price must be greater than listing price"
+        );
 
         property.price = _price;
-
-        return "Your property price updated successfully";
     }
 
     function buyProperty(uint256 _productId, address _buyer) external payable {
@@ -267,21 +282,21 @@ contract RealEstate {
             productId: _productId,
             rating: _rating,
             comment: _comment,
-            likes: 0
+            likes: 0,
+            reviewIndex: reviewsCounter
         });
 
         // Add review to reviews mapping
         reviews[_productId].push(review);
 
+        reviewsCounter++;
+
         // Add productId to userReviews mapping
         userReviews[_user].push(_productId);
 
         // Update product rating and numReviews
-        products[_productId] = Product({
-            productId: _productId,
-            totalRating: products[_productId].totalRating + _rating,
-            numReviews: products[_productId].numReviews + 1
-        });
+        products[_productId].totalRating += _rating;
+        products[_productId].numReviews += 1;
 
         emit ReviewAdded(_productId, _user, _rating, _comment);
     }
@@ -345,5 +360,17 @@ contract RealEstate {
         }
 
         return highestRatedProductId;
+    }
+
+    // Get listing price
+    function getListingPrice() public view returns (uint256) {
+        return listingPrice;
+    }
+
+    // Updates the listing price of the contract
+    function updateListingPrice(
+        uint256 _listingPrice
+    ) public payable onlyContractOwner {
+        listingPrice = _listingPrice;
     }
 }

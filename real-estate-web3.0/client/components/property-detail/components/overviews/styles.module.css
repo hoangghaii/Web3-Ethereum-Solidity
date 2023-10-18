@@ -1,0 +1,11 @@
+.card {
+  @apply px-2;
+}
+
+.detail {
+  @apply text-[#8D8D8D];
+}
+
+.ellipsis {
+  @apply w-[130px] truncate;
+}
