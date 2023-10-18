@@ -1,13 +1,12 @@
 'use client';
 
-import { HomeModernIcon } from '@heroicons/react/24/outline';
-import { Avatar, Card, Dialog, Flex, Text } from '@radix-ui/themes';
+import { ArrowPathIcon, HomeModernIcon } from '@heroicons/react/24/outline';
+import { Avatar, Button, Card, Dialog, Flex, Text } from '@radix-ui/themes';
 import { useContractRead, useContractWrite } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
 import { FC, useContext } from 'react';
 import { toast } from 'react-hot-toast';
 
-import Button from '@/components/common/button';
 import AddReviewForm from '@/components/forms/add-review-form';
 import { AppContext } from '@/providers/app-provider';
 import { ProperySolType, ReviewSolType } from '@/types';
@@ -62,26 +61,28 @@ const OverviewProperty: FC<Props> = ({ id, property }: Props) => {
             </Text>
 
             <Flex align="center" gap="3">
-              <Avatar
-                radius="full"
-                fallback="A"
-                src="https://images.unsplash.com/photo-1616766098956-c81f12114571?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1887"
-              />
-
               {!isLoadingReviewComment && reviews.length > 0 && (
-                <Flex direction="column" justify="center" gap="1">
-                  <Text
-                    size="2"
-                    weight="medium"
-                    className={`${styles.detail} ${styles.ellipsis}`}
-                  >
-                    {reviews[reviews.length - 1].reviewer}
-                  </Text>
+                <>
+                  <Avatar
+                    radius="full"
+                    fallback="A"
+                    src="https://images.unsplash.com/photo-1616766098956-c81f12114571?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1887"
+                  />
 
-                  <Text size="2" weight="medium" className={styles.detail}>
-                    {reviews[reviews.length - 1].comment}
-                  </Text>
-                </Flex>
+                  <Flex direction="column" justify="center" gap="1">
+                    <Text
+                      size="2"
+                      weight="medium"
+                      className={`${styles.detail} ${styles.ellipsis}`}
+                    >
+                      {reviews[reviews.length - 1].reviewer}
+                    </Text>
+
+                    <Text size="2" weight="medium" className={styles.detail}>
+                      {reviews[reviews.length - 1].comment}
+                    </Text>
+                  </Flex>
+                </>
               )}
             </Flex>
           </Flex>
@@ -117,15 +118,25 @@ const OverviewProperty: FC<Props> = ({ id, property }: Props) => {
       </Flex>
 
       <Flex direction="column" gap="4" mt="4">
-        <Button
-          type="submit"
-          className={styles.btn}
-          isLoading={isLoadingBuyProperty}
-          onClick={handleBuyProperty}
-        >
-          <Text>Buy Property</Text>
-          <HomeModernIcon height="20" width="20" />
-        </Button>
+        {property.owner === address ? (
+          <Button type="submit" className={styles.btn} disabled>
+            <Text>You can not buy your owned property</Text>
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className={styles.btn}
+            onClick={handleBuyProperty}
+          >
+            {isLoadingBuyProperty && (
+              <ArrowPathIcon width="16" height="16" className="animate-spin" />
+            )}
+
+            <Text>Buy Property</Text>
+
+            <HomeModernIcon height="20" width="20" />
+          </Button>
+        )}
 
         <Dialog.Root>
           <Dialog.Trigger>

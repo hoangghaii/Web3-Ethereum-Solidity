@@ -1,0 +1,15 @@
+.container {
+  @apply w-[250px] p-5;
+}
+
+.detail {
+  @apply text-[#8D8D8D];
+}
+
+.ellipsis {
+  @apply w-[195px] truncate;
+}
+
+.divider {
+  @apply w-full;
+}

@@ -1,4 +1,10 @@
 .container {
+  @apply sticky top-2 z-50;
+
+  @apply border-b border-l-0 border-r-0 border-t-0 border-solid border-b-gray-200;
+
+  @apply rounded-md px-4 py-2 shadow-md;
+
   @apply flex items-center justify-between;
 }
 
@@ -8,4 +14,24 @@
 
 .heading {
   @apply cursor-pointer;
+}
+
+.avatar {
+  @apply text-3xl;
+}
+
+.notify_box {
+  @apply relative;
+}
+
+.nofity_badge {
+  @apply absolute right-[-10px] top-[-10px];
+}
+
+.input {
+  @apply h-[38px] w-[200px];
+}
+
+.account_btn {
+  @apply !m-0 cursor-pointer !p-0;
 }

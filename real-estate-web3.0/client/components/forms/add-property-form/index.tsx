@@ -1,8 +1,9 @@
 'use client';
 
 import * as yup from 'yup';
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Card, Flex, Heading, Text, TextField } from '@radix-ui/themes';
+import { Button, Card, Flex, Heading, Text, TextField } from '@radix-ui/themes';
 import { useContractWrite } from '@thirdweb-dev/react';
 import axios from 'axios';
 import { ethers } from 'ethers';
@@ -10,7 +11,6 @@ import { FC, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import Button from '@/components/common/button';
 import { AppContext } from '@/providers/app-provider';
 
 import styles from './styles.module.css';
@@ -210,7 +210,10 @@ const AddPropertyForm: FC = () => {
           </Flex>
         </Flex>
 
-        <Button type="submit" className={styles.btn} isLoading={loading}>
+        <Button type="submit" className={styles.btn} color="teal">
+          {loading && (
+            <ArrowPathIcon width="16" height="16" className="animate-spin" />
+          )}
           Create property
         </Button>
       </form>

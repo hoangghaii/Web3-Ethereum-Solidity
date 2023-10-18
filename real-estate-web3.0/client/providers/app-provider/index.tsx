@@ -39,6 +39,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
     if (address) {
       setState((prev) => ({ ...prev, address }));
+    } else if (!address) {
+      setState((prev) => ({ ...prev, address: undefined }));
     }
   }, [address, contract, isLoading]);
 

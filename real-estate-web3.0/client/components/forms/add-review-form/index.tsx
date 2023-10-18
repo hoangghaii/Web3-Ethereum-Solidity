@@ -1,9 +1,13 @@
 'use client';
 
 import * as yup from 'yup';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowPathIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/24/outline';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
+  Button,
   Callout,
   Dialog,
   Flex,
@@ -17,7 +21,6 @@ import { FC, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import Button from '@/components/common/button';
 import { AppContext } from '@/providers/app-provider';
 
 import styles from './styles.module.css';
@@ -130,7 +133,14 @@ const AddReviewForm: FC<Props> = ({ productId }: Props) => {
             </Dialog.Close>
 
             {/* <Dialog.Close> */}
-            <Button type="submit" className={styles.btn} isLoading={isLoading}>
+            <Button type="submit" className={styles.btn}>
+              {isLoading && (
+                <ArrowPathIcon
+                  width="16"
+                  height="16"
+                  className="animate-spin"
+                />
+              )}
               Add review
             </Button>
             {/* </Dialog.Close> */}

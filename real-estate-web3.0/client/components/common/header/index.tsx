@@ -1,17 +1,31 @@
 'use client';
 
-import { Button, Heading, Text } from '@radix-ui/themes';
 import {
-  metamaskWallet,
-  useConnect,
-  useDisconnect,
-  useSigner,
-} from '@thirdweb-dev/react';
+  BellIcon,
+  MagnifyingGlassIcon,
+  MoonIcon,
+  SunIcon,
+} from '@heroicons/react/24/outline';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Flex,
+  Heading,
+  IconButton,
+  Popover,
+  Text,
+  TextField,
+} from '@radix-ui/themes';
+import { metamaskWallet, useConnect } from '@thirdweb-dev/react';
+import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { FC, useContext } from 'react';
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 
 import { AppContext } from '@/providers/app-provider';
 
+import UserMenu from './components/user-menu';
 import styles from './styles.module.css';
 
 const walletConfig = metamaskWallet();
@@ -19,13 +33,11 @@ const walletConfig = metamaskWallet();
 const Header: FC = () => {
   const router = useRouter();
 
+  const { theme, setTheme } = useTheme();
+
   const { address } = useContext(AppContext);
 
   const connect = useConnect();
-
-  const disconect = useDisconnect();
-
-  const signer = useSigner();
 
   async function handleConnect() {
     try {
@@ -40,26 +52,83 @@ const Header: FC = () => {
   }
 
   return (
-    <header className={styles.container}>
-      <Heading
-        as="h1"
-        color="teal"
-        size="8"
-        className={styles.heading}
-        onClick={handleRouterLink}
-      >
-        Real Estate Web3.0
-      </Heading>
+    <header
+      className={styles.container}
+      style={{
+        backgroundColor: theme === 'dark' ? '#111113' : '#fff',
+      }}
+    >
+      <Flex align="center" gap="1">
+        <Avatar size="4" fallback={<span className={styles.avatar}>N</span>} />
 
-      {address ? (
-        <Text as="p" weight="medium">
-          {address}
-        </Text>
-      ) : (
-        <Button onClick={handleConnect} className={styles.connect_btn}>
-          Connect to wallet
-        </Button>
-      )}
+        <Heading
+          as="h6"
+          color="teal"
+          size="8"
+          className={styles.heading}
+          onClick={handleRouterLink}
+        >
+          nuron
+        </Heading>
+      </Flex>
+
+      <Flex align="center" gap="4">
+        <TextField.Root>
+          <TextField.Input placeholder="Search…" className={styles.input} />
+
+          <TextField.Slot>
+            <MagnifyingGlassIcon height="16" width="16" />
+          </TextField.Slot>
+        </TextField.Root>
+
+        {address ? (
+          <Popover.Root>
+            <Popover.Trigger>
+              <IconButton
+                radius="full"
+                variant="ghost"
+                className={styles.account_btn}
+              >
+                <Jazzicon diameter={30} seed={jsNumberForAddress(address)} />
+              </IconButton>
+            </Popover.Trigger>
+
+            <UserMenu address={address} />
+          </Popover.Root>
+        ) : (
+          <Button onClick={handleConnect} className={styles.connect_btn}>
+            Wallet Connect
+          </Button>
+        )}
+
+        <div className={styles.notify_box}>
+          <Badge variant="soft" radius="full" className={styles.nofity_badge}>
+            <Text size="1">6</Text>
+          </Badge>
+
+          <IconButton variant="soft" radius="full">
+            <BellIcon width={20} height={20} />
+          </IconButton>
+        </div>
+
+        {theme === 'dark' ? (
+          <IconButton
+            variant="soft"
+            radius="full"
+            onClick={() => setTheme('light')}
+          >
+            <SunIcon width={20} height={20} />
+          </IconButton>
+        ) : (
+          <IconButton
+            variant="soft"
+            radius="full"
+            onClick={() => setTheme('dark')}
+          >
+            <MoonIcon width={20} height={20} />
+          </IconButton>
+        )}
+      </Flex>
     </header>
   );
 };
