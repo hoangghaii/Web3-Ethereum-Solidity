@@ -1,0 +1,59 @@
+.container {
+  @apply h-[440px] max-h-[440px];
+}
+
+.big_image_container {
+  @apply w-[440px];
+}
+
+.big_image {
+  @apply h-full w-full rounded-lg object-cover;
+}
+
+.grid {
+  @apply w-[calc(100%_-_440px_-_16px)];
+}
+
+.category_item {
+  @apply relative h-full;
+}
+
+.category_box {
+  @apply h-full;
+}
+
+.category_image_box {
+  @apply relative h-full w-full;
+}
+
+.big_image_box {
+  @apply relative;
+}
+
+.big_image_content {
+  @apply absolute bottom-12 left-14;
+}
+
+.big_image_title {
+  @apply text-white;
+}
+
+.category_content {
+  @apply absolute bottom-4 left-5;
+}
+
+.category_title {
+  @apply text-white;
+}
+
+.live_bidding_item {
+  @apply w-[calc(100%_/_5_-_20px)];
+}
+
+.live_bidding_content {
+  @apply px-2 pb-0 pt-4;
+}
+
+.badge {
+  @apply -ml-1 w-fit capitalize;
+}

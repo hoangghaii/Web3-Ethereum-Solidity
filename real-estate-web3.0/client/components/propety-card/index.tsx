@@ -10,13 +10,12 @@ import {
   Heading,
   Text,
 } from '@radix-ui/themes';
+import Image from 'next/image';
 import { FC } from 'react';
 
 import { ProperyType } from '@/types';
 
 import styles from './styles.module.css';
-
-/* eslint-disable @next/next/no-img-element */
 
 type Props = {
   property: ProperyType;
@@ -48,10 +47,11 @@ const PropertyCard: FC<Props> = ({ property, handleViewDetail }: Props) => {
       </Badge>
 
       <AspectRatio ratio={16 / 16}>
-        <img
+        <Image
           src={property.images}
           alt="Property image"
           className={styles.property_image}
+          fill
         />
       </AspectRatio>
 

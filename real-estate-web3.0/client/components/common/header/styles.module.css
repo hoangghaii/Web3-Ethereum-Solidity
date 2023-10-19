@@ -1,4 +1,7 @@
 .container {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
   @apply sticky top-2 z-50;
 
   @apply border-b border-l-0 border-r-0 border-t-0 border-solid border-b-gray-200;
@@ -34,4 +37,20 @@
 
 .account_btn {
   @apply !m-0 cursor-pointer !p-0;
+}
+
+.header_link {
+  @apply cursor-pointer text-inherit no-underline;
+
+  @apply hover:text-[#12A594];
+}
+
+.hidden {
+  @apply invisible opacity-0;
+}
+
+.logo {
+  @apply relative;
+
+  @apply after:absolute after:right-[-14px] after:block after:h-[70%] after:w-[2px] after:rounded-2xl after:bg-[#8D8D8D] after:content-[''];
 }

@@ -31,7 +31,9 @@ const AddPropertyForm: FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
+  const { register, handleSubmit, reset } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const { mutateAsync: addProperty } = useContractWrite(
     contract,
@@ -105,6 +107,8 @@ const AddPropertyForm: FC = () => {
       console.info('contract call successs', txResult);
 
       toast.success('Create property successfully!');
+
+      reset();
     } catch (err) {
       console.error('contract call failure', err);
 

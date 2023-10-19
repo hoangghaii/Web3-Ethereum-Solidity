@@ -21,7 +21,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProviders>
-          <Theme accentColor="teal" grayColor="slate">
+          <Theme
+            accentColor="teal"
+            grayColor="slate"
+            panelBackground="translucent"
+          >
             <section className="container_wrapper">{children}</section>
           </Theme>
         </ThemeProviders>

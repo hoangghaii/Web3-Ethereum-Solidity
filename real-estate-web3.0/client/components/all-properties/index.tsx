@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex } from '@radix-ui/themes';
+import { Flex, Heading } from '@radix-ui/themes';
 import { useContractRead } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/navigation';
@@ -62,16 +62,28 @@ const AllProperties: FC = () => {
   }
 
   return (
-    <Flex gap="5" className={styles.container}>
-      {properties.map((property) => {
-        return (
-          <PropertyCard
-            key={property.productId}
-            property={property}
-            handleViewDetail={() => handleViewDetail(property.productId)}
-          />
-        );
-      })}
+    <Flex direction="column" gap="4">
+      <Heading as="h4" size="7" ml="2">
+        Explore Products
+      </Heading>
+
+      <Flex
+        gap="9"
+        wrap="wrap"
+        justify="center"
+        align="center"
+        className={styles.container}
+      >
+        {properties.map((property) => {
+          return (
+            <PropertyCard
+              key={property.productId}
+              property={property}
+              handleViewDetail={() => handleViewDetail(property.productId)}
+            />
+          );
+        })}
+      </Flex>
     </Flex>
   );
 };

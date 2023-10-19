@@ -14,6 +14,7 @@ import {
   Text,
 } from '@radix-ui/themes';
 import { useContractRead } from '@thirdweb-dev/react';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { FC, useContext } from 'react';
 
@@ -43,10 +44,11 @@ const PropertyDetail: FC = () => {
       <Flex direction="column" gap="4" className={styles.section_1}>
         <Card>
           <AspectRatio ratio={16 / 16}>
-            <img
+            <Image
               src={property.images}
               alt="Property image"
               className={styles.image}
+              fill
             />
           </AspectRatio>
         </Card>
@@ -54,30 +56,33 @@ const PropertyDetail: FC = () => {
         <Flex gap="5" className={styles.image_preview_list}>
           <Card className={styles.image_preview_box}>
             <AspectRatio ratio={16 / 16}>
-              <img
+              <Image
                 src={property.images}
                 alt="Property image"
                 className={styles.image_preview}
+                fill
               />
             </AspectRatio>
           </Card>
 
           <Card className={styles.image_preview_box}>
             <AspectRatio ratio={16 / 16}>
-              <img
+              <Image
                 src={property.images}
                 alt="Property image"
                 className={styles.image_preview}
+                fill
               />
             </AspectRatio>
           </Card>
 
           <Card className={styles.image_preview_box}>
             <AspectRatio ratio={16 / 16}>
-              <img
+              <Image
                 src={property.images}
                 alt="Property image"
                 className={styles.image_preview}
+                fill
               />
             </AspectRatio>
           </Card>

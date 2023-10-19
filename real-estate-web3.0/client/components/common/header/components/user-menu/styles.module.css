@@ -1,15 +1,19 @@
 .container {
-  @apply w-[250px] p-5;
+  @apply w-[245px] px-5 py-7;
 }
 
 .detail {
   @apply text-[#8D8D8D];
 }
 
-.ellipsis {
-  @apply w-[195px] truncate;
+.ellipsis_header {
+  @apply w-[240px] truncate;
 }
 
 .divider {
   @apply w-full;
+}
+
+.address_action {
+  @apply cursor-pointer hover:no-underline;
 }

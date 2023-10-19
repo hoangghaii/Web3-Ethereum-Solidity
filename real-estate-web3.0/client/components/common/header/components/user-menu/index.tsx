@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, Button, Flex, Heading, Popover, Text } from '@radix-ui/themes';
+import { Button, Flex, Heading, Link, Popover, Text } from '@radix-ui/themes';
 import { useDisconnect } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
 import { FC, useEffect, useState } from 'react';
@@ -35,49 +35,34 @@ const UserMenu: FC<Props> = ({ address }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
-  console.log(addressBalance);
-
   return (
     <Popover.Content className={styles.container}>
       <Flex direction="column" gap="2">
-        <Heading as="h3" size="3">
-          {address}
-        </Heading>
+        <Flex direction="column" gap="1">
+          <Heading as="h3" size="3" className={styles.ellipsis_header}>
+            {address}
+          </Heading>
 
-        <hr className={styles.divider} />
+          <Link size="2" weight="medium" className={styles.address_action}>
+            Set Display Name
+          </Link>
+        </Flex>
 
-        <Flex direction="column" gap="4">
-          <Flex align="center" gap="2">
+        <Flex direction="column" gap="4" mt="2">
+          <Flex align="center" gap="2" mb="1">
             <Jazzicon diameter={30} seed={jsNumberForAddress(address)} />
 
             <Flex direction="column" justify="center" gap="1">
-              <Text size="2" weight="medium" className={styles.ellipsis}>
-                Address: {address}
+              <Text size="2" weight="medium">
+                Balance
               </Text>
               <Text size="2" weight="medium" className={styles.detail}>
-                Balance: {addressBalance} Eth
+                {addressBalance} ETH
               </Text>
             </Flex>
           </Flex>
 
-          <Flex align="center" gap="2">
-            <Avatar
-              radius="full"
-              fallback="A"
-              src="https://images.unsplash.com/photo-1616766098956-c81f12114571?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1887"
-            />
-
-            <Flex direction="column" justify="center" gap="1">
-              <Text size="2" weight="medium" className={styles.ellipsis}>
-                Address: {address}
-              </Text>
-              <Text size="2" weight="medium" className={styles.detail}>
-                Balance: {addressBalance} Eth
-              </Text>
-            </Flex>
-          </Flex>
-
-          <Button mt="2">Add Your More Funds</Button>
+          <Button>Add Your More Funds</Button>
         </Flex>
 
         <hr className={styles.divider} />

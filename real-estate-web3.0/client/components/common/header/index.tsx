@@ -19,6 +19,7 @@ import {
 } from '@radix-ui/themes';
 import { metamaskWallet, useConnect } from '@thirdweb-dev/react';
 import { useTheme } from 'next-themes';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FC, useContext } from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
@@ -52,24 +53,64 @@ const Header: FC = () => {
   }
 
   return (
-    <header
-      className={styles.container}
-      style={{
-        backgroundColor: theme === 'dark' ? '#111113' : '#fff',
-      }}
-    >
-      <Flex align="center" gap="1">
-        <Avatar size="4" fallback={<span className={styles.avatar}>N</span>} />
+    <header className={styles.container}>
+      <Flex align="center" gap="4">
+        <Flex align="center" gap="1" className={styles.logo}>
+          <Avatar
+            size="4"
+            fallback={<span className={styles.avatar}>N</span>}
+          />
 
-        <Heading
-          as="h6"
-          color="teal"
-          size="8"
-          className={styles.heading}
-          onClick={handleRouterLink}
-        >
-          nuron
-        </Heading>
+          <Heading
+            as="h6"
+            color="teal"
+            size="8"
+            className={styles.heading}
+            onClick={handleRouterLink}
+          >
+            nuron
+          </Heading>
+        </Flex>
+
+        <div className={styles.hidden} />
+
+        <Flex gap="3">
+          <Text weight="medium">
+            <Link href="/" className={styles.header_link}>
+              Home
+            </Link>
+          </Text>
+
+          <Text weight="medium">
+            <Link href="/" className={styles.header_link}>
+              About
+            </Link>
+          </Text>
+
+          <Text weight="medium">
+            <Link href="/" className={styles.header_link}>
+              Explore
+            </Link>
+          </Text>
+
+          <Text weight="medium">
+            <Link href="/" className={styles.header_link}>
+              Pages
+            </Link>
+          </Text>
+
+          <Text weight="medium">
+            <Link href="/" className={styles.header_link}>
+              Blog
+            </Link>
+          </Text>
+
+          <Text weight="medium">
+            <Link href="/" className={styles.header_link}>
+              Contact
+            </Link>
+          </Text>
+        </Flex>
       </Flex>
 
       <Flex align="center" gap="4">
