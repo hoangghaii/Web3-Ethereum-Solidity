@@ -27,6 +27,7 @@ export type ProperyType = {
 };
 
 export type ReviewSolType = {
+  reviewIndex: BigNumber;
   reviewer: string;
   productId: BigNumber;
   rating: BigNumber;

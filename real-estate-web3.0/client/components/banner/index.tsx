@@ -27,9 +27,17 @@ const Banner: FC = () => {
 
   const { data, isLoading } = useContractRead(contract, 'getAllProperties');
 
+  const { data: propertyId } = useContractRead(
+    contract,
+    'getHighestRatedProduct'
+  );
+
+  const { data: bestRatingProperty, isLoading: isLoadingBestRatingProperty } =
+    useContractRead(contract, 'getProperty', [propertyId]);
+
   const properties: ProperySolType[] = data;
 
-  if (isLoading) {
+  if (isLoading || isLoadingBestRatingProperty) {
     return;
   }
 
@@ -39,11 +47,20 @@ const Banner: FC = () => {
     <Flex direction="column" gap="8">
       <Flex gap="4" className={styles.container}>
         <Card className={styles.big_image_container}>
+          <Badge
+            variant="solid"
+            radius="full"
+            size="2"
+            className={styles.best_property_badge}
+          >
+            Best Rating Property
+          </Badge>
+
           <div className={styles.big_image_box}>
             <AspectRatio ratio={16 / 16}>
               <Image
                 src={
-                  properties[properties.length - 1].images ??
+                  bestRatingProperty.images ??
                   '/images/common/no_image_available.jpg'
                 }
                 alt="Property image"
@@ -60,7 +77,7 @@ const Banner: FC = () => {
               weight="medium"
               className={styles.big_image_title}
             >
-              {properties[properties.length - 1].propertyTitle}
+              {bestRatingProperty.propertyTitle}
             </Text>
 
             <Link size="3" weight="medium">

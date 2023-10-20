@@ -57,3 +57,7 @@
 .badge {
   @apply -ml-1 w-fit capitalize;
 }
+
+.best_property_badge {
+  @apply absolute left-[22px] top-[22px] z-[1];
+}

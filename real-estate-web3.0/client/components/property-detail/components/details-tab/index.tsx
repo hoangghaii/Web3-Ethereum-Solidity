@@ -6,7 +6,6 @@ import { FC } from 'react';
 
 import { ProperySolType } from '@/types';
 
-import OverviewProperty from '../overviews';
 import styles from './styles.module.css';
 
 type Props = {
@@ -97,8 +96,6 @@ const DetailsTab: FC<Props> = ({ id, property }: Props) => {
           </Badge>
         </Flex>
       </Flex>
-
-      <OverviewProperty id={id} property={property} />
     </Flex>
   );
 };

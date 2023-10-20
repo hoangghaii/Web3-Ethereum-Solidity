@@ -22,11 +22,14 @@ import {
 } from '@radix-ui/themes';
 import Image from 'next/image';
 import { FC } from 'react';
+import { jsNumberForAddress } from 'react-jazzicon';
+import Jazzicon from 'react-jazzicon/dist/Jazzicon';
 
 import UpdatePropertyForm from '@/components/forms/update-property-form';
 import UpdatePropertyPriceForm from '@/components/forms/update-property-price-form';
 
 import DetailsTab from './components/details-tab';
+import OverviewProperty from './components/overviews';
 import ReviewsTab from './components/reviews-tab';
 import UsersInterestTab from './components/users-interest-tab';
 import { usePropertyDetail } from './hooks';
@@ -174,10 +177,9 @@ const PropertyDetail: FC = () => {
             </Text>
 
             <Flex align="center" gap="3">
-              <Avatar
-                radius="full"
-                fallback="A"
-                src="https://images.unsplash.com/photo-1545996124-0501ebae84d0?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1964"
+              <Jazzicon
+                diameter={40}
+                seed={jsNumberForAddress(property.owner)}
               />
 
               <Text size="2" weight="medium">
@@ -224,7 +226,7 @@ const PropertyDetail: FC = () => {
             </Tabs.Content>
 
             <Tabs.Content value="reviews">
-              <ReviewsTab />
+              <ReviewsTab id={id} />
             </Tabs.Content>
 
             <Tabs.Content value="users-interest">
@@ -232,6 +234,8 @@ const PropertyDetail: FC = () => {
             </Tabs.Content>
           </Box>
         </Tabs.Root>
+
+        <OverviewProperty id={id} property={property} />
       </Flex>
     </Flex>
   );

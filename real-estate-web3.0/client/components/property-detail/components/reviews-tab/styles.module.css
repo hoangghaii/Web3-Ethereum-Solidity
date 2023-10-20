@@ -1,0 +1,3 @@
+.review_reviewer_address {
+  @apply w-[240px] truncate text-[#8D8D8D];
+}
