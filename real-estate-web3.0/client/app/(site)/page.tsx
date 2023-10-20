@@ -1,12 +1,12 @@
 'use client';
 
-import { Flex } from '@radix-ui/themes';
 import { useContext } from 'react';
 
 import Loading from '@/app/loading';
 import AllProperties from '@/components/all-properties';
 import Banner from '@/components/banner';
-import Header from '@/components/common/header';
+import TopCollection from '@/components/top-collection';
+import TopSeller from '@/components/top-seller';
 import { AppContext } from '@/providers/app-provider';
 
 export default function Home() {
@@ -18,15 +18,13 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <Banner />
 
-      <main>
-        <Flex direction="column" gap="8">
-          <Banner />
+      <AllProperties />
 
-          <AllProperties />
-        </Flex>
-      </main>
+      <TopSeller />
+
+      <TopCollection />
     </>
   );
 }

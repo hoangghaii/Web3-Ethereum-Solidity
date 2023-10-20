@@ -2,15 +2,14 @@
 
 import { ArrowPathIcon, HomeModernIcon } from '@heroicons/react/24/outline';
 import { Avatar, Button, Card, Dialog, Flex, Text } from '@radix-ui/themes';
-import { useContractRead, useContractWrite } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
-import { FC, useContext } from 'react';
-import { toast } from 'react-hot-toast';
+import { FC } from 'react';
 
 import AddReviewForm from '@/components/forms/add-review-form';
-import { AppContext } from '@/providers/app-provider';
-import { ProperySolType, ReviewSolType } from '@/types';
+import { ProperySolType } from '@/types';
+import { daysLeft } from '@/utils';
 
+import { useOverviewProperty } from '../../hooks';
 import styles from './styles.module.css';
 
 type Props = {
@@ -19,37 +18,13 @@ type Props = {
 };
 
 const OverviewProperty: FC<Props> = ({ id, property }: Props) => {
-  const { address, contract } = useContext(AppContext);
-
-  // Contract read function
-  const { mutateAsync: buyProperty, isLoading: isLoadingBuyProperty } =
-    useContractWrite(contract, 'buyProperty');
-
-  const { data: reviewComment, isLoading: isLoadingReviewComment } =
-    useContractRead(contract, 'getProductReviews', [id]);
-
-  const reviews: ReviewSolType[] = reviewComment;
-
-  async function handleBuyProperty() {
-    try {
-      const txResult = await buyProperty({
-        args: [id, address],
-        overrides: {
-          value: Number(
-            ethers.utils.formatEther(property.price)
-          ).toLocaleString(),
-        },
-      });
-
-      console.info('contract call successs', txResult);
-
-      toast.success('Create property successfully!');
-    } catch (error) {
-      console.error('contract call failure', error);
-
-      toast.error('Something went wrong, please try later.');
-    }
-  }
+  const {
+    handleBuyProperty,
+    isLoadingBuyProperty,
+    isLoadingReviewComment,
+    reviews,
+    address,
+  } = useOverviewProperty({ id, property });
 
   return (
     <Card className={styles.card}>
@@ -61,7 +36,7 @@ const OverviewProperty: FC<Props> = ({ id, property }: Props) => {
             </Text>
 
             <Flex align="center" gap="3">
-              {!isLoadingReviewComment && reviews.length > 0 && (
+              {!isLoadingReviewComment && reviews && reviews.length > 0 && (
                 <>
                   <Avatar
                     radius="full"
@@ -102,15 +77,11 @@ const OverviewProperty: FC<Props> = ({ id, property }: Props) => {
               </Text>
 
               <Text size="1" weight="medium" className={styles.detail}>
-                Comment: 4
+                Review: {reviews ? reviews.length : 0}
               </Text>
 
               <Text size="1" weight="medium" className={styles.detail}>
-                Interest: 10
-              </Text>
-
-              <Text size="1" weight="medium" className={styles.detail}>
-                Time Left: 00:06:30:53
+                Time Left: {daysLeft(new Date('2023-12-31'))} days
               </Text>
             </Flex>
           </Flex>
@@ -119,32 +90,44 @@ const OverviewProperty: FC<Props> = ({ id, property }: Props) => {
 
       <Flex direction="column" gap="4" mt="4">
         {property.owner === address ? (
-          <Button type="submit" className={styles.btn} disabled>
-            <Text>You can not buy your owned property</Text>
-          </Button>
+          <>
+            <Button className={styles.btn} disabled>
+              <Text>You can not buy your owned property</Text>
+            </Button>
+
+            <Button className={styles.btn} disabled>
+              <Text>You can not add review your owned property</Text>
+            </Button>
+          </>
         ) : (
-          <Button
-            type="submit"
-            className={styles.btn}
-            onClick={handleBuyProperty}
-          >
-            {isLoadingBuyProperty && (
-              <ArrowPathIcon width="16" height="16" className="animate-spin" />
-            )}
+          <>
+            <Button
+              type="submit"
+              className={styles.btn}
+              onClick={handleBuyProperty}
+            >
+              {isLoadingBuyProperty && (
+                <ArrowPathIcon
+                  width="16"
+                  height="16"
+                  className="animate-spin"
+                />
+              )}
 
-            <Text>Buy Property</Text>
+              <Text>Buy Property</Text>
 
-            <HomeModernIcon height="20" width="20" />
-          </Button>
+              <HomeModernIcon height="20" width="20" />
+            </Button>
+
+            <Dialog.Root>
+              <Dialog.Trigger>
+                <Button>Add Review</Button>
+              </Dialog.Trigger>
+
+              <AddReviewForm productId={id} />
+            </Dialog.Root>
+          </>
         )}
-
-        <Dialog.Root>
-          <Dialog.Trigger>
-            <Button>Add Reivew</Button>
-          </Dialog.Trigger>
-
-          <AddReviewForm productId={id} />
-        </Dialog.Root>
       </Flex>
     </Card>
   );

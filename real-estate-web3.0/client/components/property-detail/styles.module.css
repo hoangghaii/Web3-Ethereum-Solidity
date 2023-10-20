@@ -41,3 +41,11 @@
 .category_sub {
   @apply text-[#8D8D8D];
 }
+
+.popover_content {
+  @apply px-5 py-7;
+}
+
+.divider {
+  @apply w-full;
+}

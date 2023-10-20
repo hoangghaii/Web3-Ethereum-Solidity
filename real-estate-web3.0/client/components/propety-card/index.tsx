@@ -48,7 +48,7 @@ const PropertyCard: FC<Props> = ({ property, handleViewDetail }: Props) => {
 
       <AspectRatio ratio={16 / 16}>
         <Image
-          src={property.images}
+          src={property.images ?? '/images/common/no_image_available.jpg'}
           alt="Property image"
           className={styles.property_image}
           fill

@@ -1,43 +1,43 @@
 'use client';
 
-import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
+import {
+  EllipsisHorizontalIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/24/outline';
 import {
   AspectRatio,
   Avatar,
   Badge,
   Box,
+  Button,
+  Callout,
   Card,
+  Dialog,
   Flex,
   Heading,
   IconButton,
+  Popover,
   Tabs,
   Text,
 } from '@radix-ui/themes';
-import { useContractRead } from '@thirdweb-dev/react';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 
-import { AppContext } from '@/providers/app-provider';
-import { ProperySolType } from '@/types';
+import UpdatePropertyForm from '@/components/forms/update-property-form';
+import UpdatePropertyPriceForm from '@/components/forms/update-property-price-form';
 
 import DetailsTab from './components/details-tab';
 import ReviewsTab from './components/reviews-tab';
 import UsersInterestTab from './components/users-interest-tab';
+import { usePropertyDetail } from './hooks';
 import styles from './styles.module.css';
 
 const PropertyDetail: FC = () => {
-  const { id } = useParams<{ id: string }>();
-
-  const { contract } = useContext(AppContext);
-
-  const { data, isLoading } = useContractRead(contract, 'getProperty', [id]);
+  const { isLoading, id, address, property } = usePropertyDetail();
 
   if (isLoading) {
     return;
   }
-
-  const property: ProperySolType = data;
 
   return (
     <Flex className={styles.dialog} gap="5">
@@ -45,7 +45,7 @@ const PropertyDetail: FC = () => {
         <Card>
           <AspectRatio ratio={16 / 16}>
             <Image
-              src={property.images}
+              src={property.images ?? '/images/common/no_image_available.jpg'}
               alt="Property image"
               className={styles.image}
               fill
@@ -57,7 +57,7 @@ const PropertyDetail: FC = () => {
           <Card className={styles.image_preview_box}>
             <AspectRatio ratio={16 / 16}>
               <Image
-                src={property.images}
+                src={property.images ?? '/images/common/no_image_available.jpg'}
                 alt="Property image"
                 className={styles.image_preview}
                 fill
@@ -68,7 +68,7 @@ const PropertyDetail: FC = () => {
           <Card className={styles.image_preview_box}>
             <AspectRatio ratio={16 / 16}>
               <Image
-                src={property.images}
+                src={property.images ?? '/images/common/no_image_available.jpg'}
                 alt="Property image"
                 className={styles.image_preview}
                 fill
@@ -79,7 +79,7 @@ const PropertyDetail: FC = () => {
           <Card className={styles.image_preview_box}>
             <AspectRatio ratio={16 / 16}>
               <Image
-                src={property.images}
+                src={property.images ?? '/images/common/no_image_available.jpg'}
                 alt="Property image"
                 className={styles.image_preview}
                 fill
@@ -97,12 +97,66 @@ const PropertyDetail: FC = () => {
 
           <Flex gap="4">
             <Badge variant="soft" size="2" color="teal">
-              5
+              #{property.productId.toLocaleString()}
             </Badge>
 
-            <IconButton className={styles.icon_btn}>
-              <EllipsisHorizontalIcon width="28" height="28" />
-            </IconButton>
+            {property.owner === address && (
+              <Popover.Root>
+                <Popover.Trigger>
+                  <IconButton className={styles.icon_btn}>
+                    <EllipsisHorizontalIcon width="28" height="28" />
+                  </IconButton>
+                </Popover.Trigger>
+
+                <Popover.Content className={styles.popover_content}>
+                  <Flex direction="column" gap="3">
+                    <Callout.Root>
+                      <Callout.Icon>
+                        <InformationCircleIcon
+                          width={16}
+                          height={16}
+                          color="teal"
+                        />
+                      </Callout.Icon>
+                      <Callout.Text>This is your property.</Callout.Text>
+                    </Callout.Root>
+
+                    <Callout.Root>
+                      <Callout.Icon>
+                        <InformationCircleIcon
+                          width={16}
+                          height={16}
+                          color="teal"
+                        />
+                      </Callout.Icon>
+                      <Callout.Text>
+                        You will need login to update.
+                      </Callout.Text>
+                    </Callout.Root>
+
+                    <hr className={styles.divider} />
+
+                    <Flex direction="column" align="start" gap="4">
+                      <Dialog.Root>
+                        <Dialog.Trigger>
+                          <Button>Update property</Button>
+                        </Dialog.Trigger>
+
+                        <UpdatePropertyForm property={property} />
+                      </Dialog.Root>
+
+                      <Dialog.Root>
+                        <Dialog.Trigger>
+                          <Button>Update price</Button>
+                        </Dialog.Trigger>
+
+                        <UpdatePropertyPriceForm property={property} />
+                      </Dialog.Root>
+                    </Flex>
+                  </Flex>
+                </Popover.Content>
+              </Popover.Root>
+            )}
           </Flex>
         </Flex>
 
@@ -140,11 +194,17 @@ const PropertyDetail: FC = () => {
             <Flex align="center" gap="3">
               <Avatar
                 radius="full"
-                fallback="A"
-                src="https://images.unsplash.com/photo-1616766098956-c81f12114571?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1887"
+                fallback=""
+                src={`/images/banner/${property.category.toLocaleLowerCase()}.jpg`}
               />
 
-              <Text size="2" weight="medium">
+              <Text
+                size="2"
+                weight="medium"
+                style={{
+                  textTransform: 'capitalize',
+                }}
+              >
                 {property.category}
               </Text>
             </Flex>

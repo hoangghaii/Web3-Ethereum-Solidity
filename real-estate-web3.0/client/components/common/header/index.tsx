@@ -53,7 +53,12 @@ const Header: FC = () => {
   }
 
   return (
-    <header className={styles.container}>
+    <header
+      className={styles.container}
+      style={{
+        backgroundColor: theme === 'dark' ? '#111113' : '#ffffff',
+      }}
+    >
       <Flex align="center" gap="4">
         <Flex align="center" gap="1" className={styles.logo}>
           <Avatar

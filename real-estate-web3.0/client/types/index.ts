@@ -33,3 +33,12 @@ export type ReviewSolType = {
   comment: string;
   likes: BigNumber;
 };
+
+export type CategoriesType =
+  | 'all'
+  | 'housing'
+  | 'office'
+  | 'framhouse'
+  | 'retail'
+  | 'commercial'
+  | 'country';

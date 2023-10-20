@@ -43,7 +43,7 @@
 }
 
 .category_title {
-  @apply text-white;
+  @apply capitalize text-white;
 }
 
 .live_bidding_item {

@@ -2,32 +2,44 @@
 
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import {
+  AspectRatio,
   Button,
   Card,
+  Dialog,
   Flex,
-  Heading,
   Select,
   Text,
   TextField,
 } from '@radix-ui/themes';
+import Image from 'next/image';
 import { FC } from 'react';
 
 import { bannerCategories } from '@/constants';
+import { ProperySolType } from '@/types';
 
-import { useAddPropertyForm } from './hooks';
+import { useUpdatePropertyForm } from './hooks';
 import styles from './styles.module.css';
 
-const AddPropertyForm: FC = () => {
-  const { loading, register, setValue, onSubmit } = useAddPropertyForm();
+type Props = {
+  property: ProperySolType;
+};
+
+const UpdatePropertyForm: FC<Props> = ({ property }: Props) => {
+  const { loading, setValue, register, onSubmit } = useUpdatePropertyForm({
+    property,
+  });
 
   return (
-    <Card className={styles.card}>
-      <form onSubmit={onSubmit} className={styles.form}>
-        <Heading as="h3" className={styles.title}>
-          Create Property
-        </Heading>
+    <Dialog.Content className={styles.card}>
+      <Dialog.Title>Update Property</Dialog.Title>
 
-        <Flex direction="column" gap="4">
+      <Dialog.Description size="2">
+        Property id:{' '}
+        <Text weight="medium">#{property.productId.toLocaleString()}</Text>
+      </Dialog.Description>
+
+      <Flex asChild direction="column" gap="4">
+        <form onSubmit={onSubmit} className={styles.form}>
           <Flex asChild direction="column" gap="2">
             <label htmlFor="_propertyTitle">
               <Text as="span" weight="bold">
@@ -82,6 +94,7 @@ const AddPropertyForm: FC = () => {
                 type="string"
                 placeholder="Enter property price"
                 {...register('price')}
+                disabled
               />
             </label>
           </Flex>
@@ -106,13 +119,28 @@ const AddPropertyForm: FC = () => {
                 Image
               </Text>
 
-              <TextField.Input
-                id="_images"
-                type="file"
-                accept=".png, .jpg, .jpeg"
-                {...register('images')}
-                className={styles.form_image_input}
-              />
+              <Flex gap="4" align="start">
+                <TextField.Input
+                  id="_images"
+                  type="file"
+                  accept=".png, .jpg, .jpeg"
+                  {...register('images')}
+                  className={styles.form_image_input}
+                />
+
+                {property.images && (
+                  <Card className={styles.property_image_card}>
+                    <AspectRatio ratio={16 / 16}>
+                      <Image
+                        src={property.images}
+                        alt="Property Image"
+                        fill
+                        className={styles.property_image}
+                      />
+                    </AspectRatio>
+                  </Card>
+                )}
+              </Flex>
             </label>
           </Flex>
 
@@ -129,17 +157,29 @@ const AddPropertyForm: FC = () => {
               />
             </label>
           </Flex>
-        </Flex>
 
-        <Button type="submit" className={styles.btn} color="teal">
-          {loading && (
-            <ArrowPathIcon width="16" height="16" className="animate-spin" />
-          )}
-          Create property
-        </Button>
-      </form>
-    </Card>
+          <Flex gap="3" mt="4" align="center" justify="end">
+            <Dialog.Close>
+              <Button variant="soft" color="gray">
+                Cancel
+              </Button>
+            </Dialog.Close>
+
+            <Button type="submit">
+              {loading && (
+                <ArrowPathIcon
+                  width="16"
+                  height="16"
+                  className="animate-spin"
+                />
+              )}
+              Update property
+            </Button>
+          </Flex>
+        </form>
+      </Flex>
+    </Dialog.Content>
   );
 };
 
-export default AddPropertyForm;
+export default UpdatePropertyForm;

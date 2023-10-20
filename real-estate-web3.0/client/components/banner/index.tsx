@@ -16,19 +16,11 @@ import { ethers } from 'ethers';
 import Image from 'next/image';
 import { FC, useContext } from 'react';
 
+import { bannerCategories } from '@/constants';
 import { AppContext } from '@/providers/app-provider';
 import { ProperySolType } from '@/types';
 
 import styles from './styles.module.css';
-
-const categories = [
-  { name: 'Housing', link: '/housing', worth: 4264.2383 },
-  { name: 'Office', link: '/office', worth: 4264.2383 },
-  { name: 'Framhouse', link: '/framhouse', worth: 4264.2383 },
-  { name: 'Retail', link: '/retail', worth: 4264.2383 },
-  { name: 'Commercial', link: '/commercial', worth: 4264.2383 },
-  { name: 'Country', link: '/country', worth: 4264.2383 },
-];
 
 const Banner: FC = () => {
   const { contract } = useContext(AppContext);
@@ -50,7 +42,10 @@ const Banner: FC = () => {
           <div className={styles.big_image_box}>
             <AspectRatio ratio={16 / 16}>
               <Image
-                src={properties[properties.length - 1].images}
+                src={
+                  properties[properties.length - 1].images ??
+                  '/images/common/no_image_available.jpg'
+                }
                 alt="Property image"
                 className={styles.big_image}
                 fill
@@ -75,8 +70,8 @@ const Banner: FC = () => {
         </Card>
 
         <Grid columns="3" gap="4" className={styles.grid}>
-          {categories.map((category) => (
-            <div className={styles.category_item} key={category.name}>
+          {bannerCategories.map((category) => (
+            <div className={styles.category_item} key={category.name as string}>
               <Card className={styles.category_box}>
                 <div className={styles.category_image_box}>
                   <Image
@@ -131,7 +126,7 @@ const Banner: FC = () => {
                   className={styles.live_bidding_image_box}
                 >
                   <Image
-                    src={item.images}
+                    src={item.images ?? '/images/common/no_image_available.jpg'}
                     alt="Property image"
                     className={styles.big_image}
                     fill

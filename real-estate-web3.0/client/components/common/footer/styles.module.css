@@ -1,0 +1,15 @@
+.container {
+  @apply w-full px-12 pb-10 pt-20;
+}
+
+.section {
+  @apply w-full;
+}
+
+.grid {
+  @apply w-[650px];
+}
+
+.diviver {
+  @apply w-full;
+}
